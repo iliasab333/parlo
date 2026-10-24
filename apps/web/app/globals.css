@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: oklch(0.15 0.018 264);
+  --color-ink-900: oklch(0.19 0.020 264);
+  --color-ink-800: oklch(0.24 0.022 264);
+  --color-ink-700: oklch(0.32 0.022 264);
+  --color-ink-500: oklch(0.55 0.018 264);
+  --color-ink-300: oklch(0.76 0.012 264);
+  --color-ink-100: oklch(0.94 0.006 264);
+
+  --color-accent: oklch(0.74 0.165 165);
+  --color-accent-dim: oklch(0.55 0.115 165);
+  --color-warn: oklch(0.72 0.16 55);
+  --color-danger: oklch(0.65 0.20 25);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(60rem 40rem at 15% -10%, oklch(0.28 0.08 175 / 0.35), transparent 60%),
+    radial-gradient(50rem 35rem at 95% 5%, oklch(0.30 0.10 300 / 0.25), transparent 60%),
+    var(--color-ink-950);
+  color: var(--color-ink-100);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+}
+
+/* Thin, unobtrusive scrollbars inside chat panes. */
+.scroll-slim::-webkit-scrollbar { width: 6px; }
+.scroll-slim::-webkit-scrollbar-thumb {
+  background: var(--color-ink-700);
+  border-radius: 999px;
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.9); opacity: 0.7; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { opacity: 0; }
+}
+.pulse-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid var(--color-accent);
+  animation: pulse-ring 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}

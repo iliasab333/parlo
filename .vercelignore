@@ -1,0 +1,10 @@
+node_modules
+.next
+dist
+*.tsbuildinfo
+
+# Server-side only: the signalling server cannot run on Vercel
+# (no inbound WebSocket support). It deploys to Fly.io / Railway.
+apps/signal
+scripts
+db

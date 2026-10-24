@@ -1,0 +1,23 @@
+{
+  "name": "parlo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@parlo/signal & npm run dev --workspace=@parlo/web",
+    "dev:signal": "npm run dev --workspace=@parlo/signal",
+    "dev:web": "npm run dev --workspace=@parlo/web",
+    "build": "npm run build --workspace=@parlo/protocol && npm run build --workspace=@parlo/signal && npm run build --workspace=@parlo/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "node scripts/smoke.mjs && node scripts/moderation.mjs",
+    "test:match": "node scripts/smoke.mjs",
+    "test:moderation": "node scripts/moderation.mjs",
+    "db:migrate": "psql \"$DATABASE_URL\" -f db/migrations/001_moderation.sql"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

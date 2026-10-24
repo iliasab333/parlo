@@ -1,0 +1,34 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "parlo-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev:web"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "blafran-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/bigseo/blafran",
+        "run",
+        "dev"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "buscobarato-node",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-lc",
+        "cd /Users/bigseo/buscobarato && SITES_LOCAL_RUNTIME=node corepack pnpm run dev"
+      ],
+      "port": 5173
+    }
+  ]
+}

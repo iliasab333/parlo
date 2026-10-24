@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.next/
+*.tsbuildinfo
+next-env.d.ts
+
+.env
+.env.local
+.env*.local
+
+.DS_Store
+*.log
+.vercel
+.env*
+
+# ...but the documented template must stay tracked.
+!.env.example

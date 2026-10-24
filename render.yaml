@@ -1,0 +1,51 @@
+# Render blueprint for the Parlo signalling server.
+#
+# The web app lives on Vercel; only apps/signal deploys here, because
+# Vercel Functions do not accept inbound WebSocket connections.
+#
+# PLAN NOTE: `free` spins the service down after ~15 minutes without
+# traffic. The first visitor after that waits for a cold start and any
+# live WebSocket is dropped. It also restarts the process, which wipes
+# the in-memory moderation fallback — set DATABASE_URL (see below) if
+# bans need to outlive a nap.
+
+services:
+  - type: web
+    name: parlo-signal
+    runtime: node
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+
+    buildCommand: >-
+      npm install &&
+      npm run build --workspace=@parlo/protocol &&
+      npm run build --workspace=@parlo/signal
+    startCommand: node apps/signal/dist/index.js
+
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+
+      # Render injects PORT; config.ts reads it and falls back to 8787.
+
+      # Lock the WebSocket upgrade to the deployed front end. Leaving
+      # this at "*" lets any origin drive your signalling server.
+      - key: ALLOWED_ORIGINS
+        value: https://parlo-seven.vercel.app
+
+      # Signs device tokens. Rotating it invalidates every active ban,
+      # so let Render generate it once and leave it alone.
+      - key: DEVICE_TOKEN_SECRET
+        generateValue: true
+
+      # Durable moderation state. Without it the server runs the
+      # in-memory fallback and says so at boot — fine for a demo, not
+      # for anything with real users. Apply
+      # db/migrations/001_moderation.sql before setting this.
+      - key: DATABASE_URL
+        sync: false
+
+      # See LEGAL.md §2. Must become "true" before real users.
+      - key: REQUIRE_AGE_TOKEN
+        value: "false"
