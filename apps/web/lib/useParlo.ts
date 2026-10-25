@@ -58,7 +58,13 @@ export interface ParloState {
   reactions: FloatingReaction[];
 }
 
-export function useParlo() {
+/** Strings the hook itself emits, so it carries no language of its own. */
+export interface ParloStrings {
+  peerLeft: { skip: string; reported: string; timeout: string; disconnect: string };
+  errors: { camera: string; misconfigured: string; closed: string; connect: string };
+}
+
+export function useParlo(strings: ParloStrings) {
   const [state, setState] = useState<ParloState>({
     status: "connecting",
     error: null,
@@ -201,12 +207,7 @@ export function useParlo() {
     // misconfiguration here turns a deployment mistake into a sentence
     // someone can act on.
     if (window.location.protocol === "https:" && SIGNAL_URL.startsWith("ws://")) {
-      setState((s) => ({
-        ...s,
-        status: "error",
-        error:
-          "Configuración incompleta: NEXT_PUBLIC_SIGNAL_URL apunta a ws:// desde una página https. El servidor de señalización necesita wss://.",
-      }));
+      setState((s) => ({ ...s, status: "error", error: strings.errors.misconfigured }));
       return;
     }
 
@@ -289,14 +290,7 @@ export function useParlo() {
           push({
             from: "system",
             at: Date.now(),
-            text:
-              msg.reason === "skip"
-                ? "Tu compañero pasó a otra conversación."
-                : msg.reason === "reported"
-                  ? "Conversación finalizada."
-                  : msg.reason === "timeout"
-                    ? "Se acabó el tiempo. Buscando a otra persona…"
-                    : "Tu compañero se desconectó.",
+            text: strings.peerLeft[msg.reason],
           });
           break;
 
@@ -320,17 +314,13 @@ export function useParlo() {
 
     socket.onerror = () => {
       if (disposed) return;
-      setState((s) => ({
-        ...s,
-        status: "error",
-        error: "No se pudo conectar al servidor de emparejamiento.",
-      }));
+      setState((s) => ({ ...s, status: "error", error: strings.errors.connect }));
     };
 
     socket.onclose = () => {
       if (disposed) return;
       setState((s) =>
-        s.status === "banned" ? s : { ...s, status: "error", error: "Conexión cerrada." },
+        s.status === "banned" ? s : { ...s, status: "error", error: strings.errors.closed },
       );
     };
 
@@ -340,7 +330,7 @@ export function useParlo() {
       pc.current?.close();
       localStream.current?.getTracks().forEach((t) => t.stop());
     };
-  }, [createPeer, handleSignal, push, showReaction, teardownPeer]);
+  }, [createPeer, handleSignal, push, showReaction, strings, teardownPeer]);
 
   /* ----------------------------- actions --------------------------- */
 
@@ -357,18 +347,14 @@ export function useParlo() {
           localStream.current = stream;
           setState((s) => ({ ...s, localStream: stream }));
         } catch {
-          setState((s) => ({
-            ...s,
-            error:
-              "Parlo necesita cámara y micrófono. Revisa los permisos del navegador y vuelve a intentarlo.",
-          }));
+          setState((s) => ({ ...s, error: strings.errors.camera }));
           return;
         }
       }
 
       send({ t: "queue", profile, prefs });
     },
-    [send],
+    [send, strings],
   );
 
   const skip = useCallback(() => {

@@ -11,7 +11,7 @@ export function ReactionBar({ onReact }: { onReact: (r: Reaction) => void }) {
         <button
           key={r}
           onClick={() => onReact(r)}
-          aria-label={`Enviar reacción ${r}`}
+          aria-label={r}
           className="grid size-9 place-items-center rounded-lg border border-ink-700 text-lg transition hover:scale-110 hover:border-accent active:scale-95"
         >
           {REACTION_GLYPH[r]}

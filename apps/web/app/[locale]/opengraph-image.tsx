@@ -1,11 +1,23 @@
 import { ImageResponse } from "next/og";
+import { getDictionary } from "@/lib/dictionaries";
+import { LOCALES, isLocale } from "@/lib/i18n";
 import { site } from "@/lib/site";
 
-export const alt = `${site.name} — ${site.tagline}`;
+export const alt = site.name;
+
+export function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }));
+}
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = getDictionary(isLocale(locale) ? locale : "es");
   return new ImageResponse(
     (
       <div
@@ -41,15 +53,11 @@ export default function OpenGraphImage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ fontSize: 68, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2 }}>
-            Habla con un nativo
+          <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.08, letterSpacing: -2, maxWidth: 940 }}>
+            {t.home.headline}
           </div>
-          <div style={{ fontSize: 68, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2, color: "#34d399" }}>
-            ahora mismo.
-          </div>
-          <div style={{ fontSize: 28, color: "#9aa7b2", maxWidth: 760, lineHeight: 1.4 }}>
-            Videochat de intercambio de idiomas. Te emparejamos con alguien que
-            estudia lo que tú hablas.
+          <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.08, letterSpacing: -2, color: "#34d399" }}>
+            {t.home.headlineMuted}
           </div>
         </div>
 
@@ -62,7 +70,7 @@ export default function OpenGraphImage() {
               display: "flex",
             }}
           >
-            Solo +18
+{t.common.adultsOnly}
           </div>
           <div
             style={{
@@ -72,7 +80,7 @@ export default function OpenGraphImage() {
               display: "flex",
             }}
           >
-            20 idiomas
+20 · 6
           </div>
           <div
             style={{
@@ -82,7 +90,7 @@ export default function OpenGraphImage() {
               display: "flex",
             }}
           >
-            Gratis
+{t.common.free}
           </div>
         </div>
       </div>

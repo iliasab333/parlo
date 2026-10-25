@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { Dictionary } from "@/lib/dictionaries";
 
 function Tile({
   stream,
   muted,
   label,
   mirrored,
+  noSignal,
 }: {
   stream: MediaStream | null;
   muted?: boolean;
   label: string;
   mirrored?: boolean;
+  noSignal: string;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
 
@@ -32,7 +35,7 @@ function Tile({
       />
       {!stream && (
         <div className="absolute inset-0 grid place-items-center text-sm text-ink-500">
-          Sin señal
+{noSignal}
         </div>
       )}
       <span className="absolute bottom-2.5 left-2.5 rounded-md bg-ink-950/70 px-2 py-1 text-xs font-medium backdrop-blur">
@@ -43,18 +46,20 @@ function Tile({
 }
 
 export function VideoStage({
+  t,
   local,
   remote,
   peerName,
 }: {
+  t: Dictionary;
   local: MediaStream | null;
   remote: MediaStream | null;
   peerName: string;
 }) {
   return (
     <div className="grid flex-1 grid-rows-2 gap-3 sm:grid-cols-2 sm:grid-rows-1">
-      <Tile stream={remote} label={peerName} />
-      <Tile stream={local} muted label="Tú" mirrored />
+      <Tile stream={remote} label={peerName} noSignal={t.session.noSignal} />
+      <Tile stream={local} muted label={t.session.you} mirrored noSignal={t.session.noSignal} />
     </div>
   );
 }

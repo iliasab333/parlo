@@ -1,8 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { LANGUAGE_NAMES, type Prefs, type Profile, type PublicProfile } from "@parlo/protocol";
+import { useMemo, useState } from "react";
+import {
+  LANGUAGE_NAMES,
+  type Language,
+  type Prefs,
+  type Profile,
+  type PublicProfile,
+} from "@parlo/protocol";
+import type { Dictionary } from "@/lib/dictionaries";
+import type { Locale } from "@/lib/i18n";
 import { useParlo } from "@/lib/useParlo";
 import { AgeGate } from "@/components/AgeGate";
 import { SetupPanel } from "@/components/SetupPanel";
@@ -12,10 +20,10 @@ import { ReportDialog } from "@/components/ReportDialog";
 import { SessionClock } from "@/components/SessionClock";
 import { ReactionBar, FloatingReactions } from "@/components/Reactions";
 
-function PeerCard({ peer }: { peer: PublicProfile }) {
+function PeerCard({ t, peer }: { t: Dictionary; peer: PublicProfile }) {
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-      <span className="font-semibold">{peer.displayName ?? "Anónimo"}</span>
+      <span className="font-semibold">{peer.displayName ?? t.session.anonymous}</span>
       {peer.region && (
         <span className="rounded-md bg-ink-800 px-2 py-0.5 text-xs text-ink-300">
           {peer.region}
@@ -23,19 +31,25 @@ function PeerCard({ peer }: { peer: PublicProfile }) {
       )}
       {peer.international && (
         <span className="rounded-md bg-accent/15 px-2 py-0.5 text-xs text-accent">
-          Internacional
+          {t.session.international}
         </span>
       )}
       <span className="text-xs text-ink-500">
-        Habla {peer.speaks.map((l) => LANGUAGE_NAMES[l]).join(", ")} · Practica{" "}
-        {peer.learning.map((l) => LANGUAGE_NAMES[l]).join(", ")}
+        {t.session.speaks} {peer.speaks.map((l) => LANGUAGE_NAMES[l]).join(", ")} ·{" "}
+        {t.session.practises} {peer.learning.map((l) => LANGUAGE_NAMES[l]).join(", ")}
       </span>
     </div>
   );
 }
 
-export default function ChatPage() {
-  const parlo = useParlo();
+export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
+  // The hook must not carry a language of its own, so the strings it
+  // emits are handed in. Memoised: it is an effect dependency.
+  const strings = useMemo(
+    () => ({ peerLeft: t.peerLeft, errors: t.errors }),
+    [t.peerLeft, t.errors],
+  );
+  const parlo = useParlo(strings);
   const [ageOk, setAgeOk] = useState(false);
   const [reporting, setReporting] = useState(false);
 
@@ -49,12 +63,9 @@ export default function ChatPage() {
     return (
       <main className="grid min-h-dvh place-items-center p-6">
         <div className="max-w-md text-center">
-          <h1 className="text-2xl font-semibold">Cuenta suspendida</h1>
+          <h1 className="text-2xl font-semibold">{t.banned.title}</h1>
           <p className="mt-3 text-sm leading-relaxed text-ink-300">{parlo.error}</p>
-          <p className="mt-4 text-xs text-ink-500">
-            Si crees que es un error, puedes apelar escribiendo a
-            soporte@parlo.example.
-          </p>
+          <p className="mt-4 text-xs text-ink-500">{t.banned.appeal}</p>
         </div>
       </main>
     );
@@ -62,10 +73,10 @@ export default function ChatPage() {
 
   return (
     <main className="mx-auto flex h-dvh max-w-6xl flex-col px-5 py-5">
-      {!ageOk && <AgeGate onConfirm={() => setAgeOk(true)} />}
+      {!ageOk && <AgeGate t={t} onConfirm={() => setAgeOk(true)} />}
 
       <header className="mb-5 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href={`/${locale}`} className="flex items-center gap-2.5">
           <div className="grid size-8 place-items-center rounded-lg bg-accent/15 text-accent">
             <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-4.3-1L3 20l1.3-4a8.2 8.2 0 0 1-1.1-4.5 8.4 8.4 0 0 1 8.9-8.4 8.4 8.4 0 0 1 8.9 8.4Z" strokeLinecap="round" strokeLinejoin="round" />
@@ -77,9 +88,11 @@ export default function ChatPage() {
         <div className="flex items-center gap-4 text-xs text-ink-500">
           <span className="flex items-center gap-1.5">
             <span className="size-1.5 rounded-full bg-accent" />
-            {parlo.stats.online} en línea
+            {parlo.stats.online} {t.common.online}
           </span>
-          <span>{parlo.stats.waiting} buscando</span>
+          <span>
+            {parlo.stats.waiting} {t.common.searching}
+          </span>
         </div>
       </header>
 
@@ -89,67 +102,64 @@ export default function ChatPage() {
         </div>
       )}
 
-      {/* Lobby ------------------------------------------------------- */}
       {(parlo.status === "idle" || parlo.status === "connecting") && (
         <div className="scroll-slim flex-1 overflow-y-auto">
           <div className="mx-auto max-w-2xl rounded-2xl border border-ink-800 bg-ink-900/50 p-7">
-            <h1 className="text-xl font-semibold">Configura tu sesión</h1>
-            <p className="mt-1.5 mb-7 text-sm text-ink-500">
-              {parlo.status === "connecting"
-                ? "Conectando con el servidor…"
-                : "Te emparejaremos con alguien compatible."}
+            <h1 className="text-xl font-semibold">{t.setup.title}</h1>
+            <p className="mb-7 mt-1.5 text-sm text-ink-500">
+              {parlo.status === "connecting" ? t.setup.connecting : t.setup.lede}
             </p>
-            <SetupPanel disabled={parlo.status !== "idle"} onStart={handleStart} />
+            <SetupPanel
+              t={t}
+              locale={locale}
+              disabled={parlo.status !== "idle"}
+              onStart={handleStart}
+            />
           </div>
         </div>
       )}
 
-      {/* Searching --------------------------------------------------- */}
       {parlo.status === "queued" && (
         <div className="flex flex-1 flex-col items-center justify-center gap-6">
           <div className="pulse-ring relative size-16 rounded-full bg-accent/15" />
           <div className="text-center">
-            <p className="font-medium">Buscando compañero…</p>
-            <p className="mt-1.5 max-w-sm text-sm text-ink-500">
-              Ampliamos idioma y región a medida que pasa el tiempo. Tu filtro de
-              género se mantiene siempre.
-            </p>
+            <p className="font-medium">{t.queue.title}</p>
+            <p className="mt-1.5 max-w-sm text-sm text-ink-500">{t.queue.note}</p>
           </div>
           <button
             onClick={parlo.stop}
             className="rounded-xl border border-ink-700 px-5 py-2.5 text-sm font-medium text-ink-300 hover:border-ink-500"
           >
-            Cancelar
+            {t.queue.cancel}
           </button>
         </div>
       )}
 
-      {/* In session -------------------------------------------------- */}
       {parlo.status === "matched" && parlo.peer && (
         <div className="flex min-h-0 flex-1 flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <PeerCard peer={parlo.peer} />
+            <PeerCard t={t} peer={parlo.peer} />
             <div className="flex flex-wrap items-center gap-2">
               {parlo.timer && (
-                <SessionClock timer={parlo.timer} onExtend={parlo.extend} />
+                <SessionClock t={t} timer={parlo.timer} onExtend={parlo.extend} />
               )}
               <button
                 onClick={() => setReporting(true)}
                 className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-danger hover:text-danger"
               >
-                Reportar
+                {t.session.report}
               </button>
               <button
                 onClick={parlo.skip}
                 className="rounded-lg bg-ink-800 px-4 py-2 text-sm font-medium transition hover:bg-ink-700"
               >
-                Siguiente
+                {t.session.next}
               </button>
               <button
                 onClick={parlo.stop}
                 className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 hover:border-ink-500"
               >
-                Salir
+                {t.session.exit}
               </button>
             </div>
           </div>
@@ -157,9 +167,10 @@ export default function ChatPage() {
           <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.6fr_1fr]">
             <div className="relative flex min-h-0 flex-col gap-3">
               <VideoStage
+                t={t}
                 local={parlo.localStream}
                 remote={parlo.remoteStream}
-                peerName={parlo.peer.displayName ?? "Anónimo"}
+                peerName={parlo.peer.displayName ?? t.session.anonymous}
               />
               <FloatingReactions items={parlo.reactions} />
               <div className="flex justify-center">
@@ -168,6 +179,7 @@ export default function ChatPage() {
             </div>
 
             <ChatPane
+              t={t}
               messages={parlo.messages}
               peerTyping={parlo.peerTyping}
               disabled={false}
@@ -179,14 +191,12 @@ export default function ChatPage() {
       )}
 
       {inSession && (
-        <p className="mt-4 text-center text-xs text-ink-500">
-          No grabamos las llamadas. Nunca compartas datos personales, cuentas ni
-          dinero con desconocidos.
-        </p>
+        <p className="mt-4 text-center text-xs text-ink-500">{t.session.privacyNote}</p>
       )}
 
       {reporting && (
         <ReportDialog
+          t={t}
           onClose={() => setReporting(false)}
           onSubmit={(reason, note) => {
             parlo.report(reason, note);
@@ -197,3 +207,5 @@ export default function ChatPage() {
     </main>
   );
 }
+
+export type { Language };

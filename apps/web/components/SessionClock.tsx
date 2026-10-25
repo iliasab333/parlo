@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Dictionary } from "@/lib/dictionaries";
 import type { SessionTimer } from "@/lib/useParlo";
 
 const UNLIMITED = Number.MAX_SAFE_INTEGER;
@@ -17,9 +18,11 @@ function mmss(ms: number) {
  * "waiting" rather than silently doing nothing.
  */
 export function SessionClock({
+  t,
   timer,
   onExtend,
 }: {
+  t: Dictionary;
   timer: SessionTimer;
   onExtend: () => void;
 }) {
@@ -37,7 +40,7 @@ export function SessionClock({
           <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
           <path d="M12 6v6l4 2" strokeLinecap="round" />
         </svg>
-        Sin límite de tiempo
+        {t.session.unlimited}
       </div>
     );
   }
@@ -63,7 +66,7 @@ export function SessionClock({
 
       {timer.youWant ? (
         <span className="text-sm text-ink-500">
-          {timer.peerWants ? "¡Seguimos!" : "Esperando a tu compañero…"}
+          {timer.peerWants ? t.session.bothIn : t.session.waitingPeer}
         </span>
       ) : (
         <button
@@ -76,7 +79,7 @@ export function SessionClock({
                 : "border border-ink-700 text-ink-300 hover:border-accent hover:text-accent"
           }`}
         >
-          {timer.peerWants ? "Quiere seguir — ¿tú?" : "Seguir hablando"}
+          {timer.peerWants ? t.session.peerWants : t.session.keepTalking}
         </button>
       )}
     </div>

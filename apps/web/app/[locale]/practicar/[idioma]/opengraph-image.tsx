@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
 import { LANGUAGE_PAGES, pageBySlug } from "@/lib/languages";
+import { getDictionary } from "@/lib/dictionaries";
+import { LOCALES, isLocale } from "@/lib/i18n";
 import { site } from "@/lib/site";
 
 export const alt = "Practicar idiomas con nativos en Parlo";
@@ -8,17 +10,20 @@ export const contentType = "image/png";
 
 // Prerender one image per language alongside its page.
 export function generateStaticParams() {
-  return LANGUAGE_PAGES.map((p) => ({ idioma: p.slug }));
+  return LOCALES.flatMap((locale) =>
+    LANGUAGE_PAGES.map((p) => ({ locale, idioma: p.slug })),
+  );
 }
 
 export default async function LanguageOpenGraphImage({
   params,
 }: {
-  params: Promise<{ idioma: string }>;
+  params: Promise<{ locale: string; idioma: string }>;
 }) {
-  const { idioma } = await params;
+  const { locale, idioma } = await params;
+  const t = getDictionary(isLocale(locale) ? locale : "es");
   const page = pageBySlug(idioma);
-  const nombre = page?.nombre ?? "idiomas";
+  const nombre = page?.nombre ?? "";
 
   return new ImageResponse(
     (
@@ -55,7 +60,7 @@ export default async function LanguageOpenGraphImage({
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ fontSize: 34, color: "#9aa7b2", display: "flex" }}>Practicar</div>
+          <div style={{ fontSize: 34, color: "#9aa7b2", display: "flex" }}>{t.home.practiceVerb}</div>
           <div
             style={{
               fontSize: 96,
@@ -69,12 +74,12 @@ export default async function LanguageOpenGraphImage({
             {nombre}
           </div>
           <div style={{ fontSize: 30, color: "#9aa7b2", maxWidth: 820, lineHeight: 1.35 }}>
-            hablando con nativos que están aprendiendo español
+{t.common.tagline}
           </div>
         </div>
 
         <div style={{ display: "flex", gap: 14, fontSize: 22, color: "#9aa7b2" }}>
-          {["Solo +18", "Gratis", "Sin registro"].map((chip) => (
+          {[t.common.adultsOnly, t.common.free].map((chip) => (
             <div
               key={chip}
               style={{

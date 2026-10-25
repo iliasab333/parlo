@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { Dictionary } from "@/lib/dictionaries";
 import type { ChatLine } from "@/lib/useParlo";
 
 export function ChatPane({
+  t,
   messages,
   peerTyping,
   disabled,
   onSend,
   onTyping,
 }: {
+  t: Dictionary;
   messages: ChatLine[];
   peerTyping: boolean;
   disabled: boolean;
@@ -43,7 +46,7 @@ export function ChatPane({
       <div className="scroll-slim flex-1 space-y-2.5 overflow-y-auto p-4">
         {messages.length === 0 && (
           <p className="pt-6 text-center text-sm text-ink-500">
-            Rompe el hielo. Pregunta de dónde es.
+{t.chat.icebreaker}
           </p>
         )}
 
@@ -71,7 +74,7 @@ export function ChatPane({
         )}
 
         {peerTyping && (
-          <p className="text-xs text-ink-500">escribiendo…</p>
+          <p className="text-xs text-ink-500">{t.chat.typing}</p>
         )}
         <div ref={endRef} />
       </div>
@@ -87,7 +90,7 @@ export function ChatPane({
               submit();
             }
           }}
-          placeholder={disabled ? "Esperando compañero…" : "Escribe un mensaje"}
+          placeholder={disabled ? t.chat.placeholderWaiting : t.chat.placeholder}
           className="flex-1 rounded-lg border border-ink-700 bg-ink-950 px-3 py-2 text-sm outline-none placeholder:text-ink-500 focus:border-accent disabled:opacity-50"
         />
         <button
@@ -95,7 +98,7 @@ export function ChatPane({
           disabled={disabled || !draft.trim()}
           className="rounded-lg bg-accent px-4 text-sm font-semibold text-ink-950 transition enabled:hover:brightness-110 disabled:opacity-35"
         >
-          Enviar
+          {t.chat.send}
         </button>
       </div>
     </div>
