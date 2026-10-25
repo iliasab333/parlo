@@ -85,10 +85,27 @@ de orígenes devolviendo 403 a cualquier origen que no sea el de Vercel.
 `NEXT_PUBLIC_SIGNAL_URL` se incrusta en tiempo de build: si la cambias,
 hay que **volver a desplegar**, no basta con guardarla.
 
+### Cambiar de dominio
+
 ```bash
-npx vercel env add NEXT_PUBLIC_SIGNAL_URL production
-npx vercel deploy --prod
+npx vercel domains buy tudominio.com      # la compra la haces tú:
+                                          # Vercel la bloquea para agentes
+./scripts/switch-domain.sh tudominio.com  # asigna, fija el canonical, despliega
+node scripts/verify-domain.mjs tudominio.com
 ```
+
+Tres cosas tienen que coincidir o el sitio funciona a medias de un modo
+fácil de pasar por alto:
+
+1. Vercel tiene que servir el dominio — si no, redirige al SSO.
+2. `NEXT_PUBLIC_SITE_URL` tiene que coincidir — si no, el canonical
+   apunta al dominio viejo y el nuevo nunca se indexa.
+3. `ALLOWED_ORIGINS` en Render tiene que incluirlo — si no, **todas las
+   páginas devuelven 200 y el chat da 403 en silencio**.
+
+El guion automatiza 1 y 2; el 3 es un cambio manual en el panel de
+Render, que no admite escritura sin clave de API. `verify-domain.mjs`
+comprueba los tres, y existe precisamente para cazar el tercero.
 
 El repositorio es **público** porque Render está conectado a otra cuenta
 de GitHub y clonar por URL fue el camino corto. No hay secretos dentro
@@ -131,6 +148,17 @@ payloads malformados.
 PORT=8788 REMATCH_COOLDOWN_MS=0 npm run dev:signal   # en otra terminal
 node scripts/moderation.mjs
 ```
+
+```bash
+PORT=8789 SESSION_MS=6000 SESSION_EXTEND_MS=8000 \
+  SESSION_UNLIMITED_AFTER=2 npm run dev:signal       # en otra terminal
+node scripts/session.mjs
+```
+
+Nueve comprobaciones del cronómetro y las reacciones: que el
+emparejamiento llega con cuenta atrás, que **pedir seguir en solitario
+no alarga nada**, que hacerlo los dos sí, que las reacciones se relevan
+y que una reacción inventada se rechaza.
 
 Seis comprobaciones de moderación, que es donde está el riesgo real:
 baneo inmediato por reporte de menor, persistencia del baneo al

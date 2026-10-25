@@ -9,7 +9,7 @@ import {
   type Profile,
   type PublicProfile,
 } from "@parlo/protocol";
-import type { Dictionary } from "@/lib/dictionaries";
+import { fill, type Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { site } from "@/lib/site";
 import { useParlo } from "@/lib/useParlo";
@@ -66,7 +66,9 @@ export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
         <div className="max-w-md text-center">
           <h1 className="text-2xl font-semibold">{t.banned.title}</h1>
           <p className="mt-3 text-sm leading-relaxed text-ink-300">{parlo.error}</p>
-          <p className="mt-4 text-xs text-ink-500">{t.banned.appeal}</p>
+          <p className="mt-4 text-xs text-ink-500">
+            {fill(t.banned.appeal, { email: site.supportEmail })}
+          </p>
         </div>
       </main>
     );

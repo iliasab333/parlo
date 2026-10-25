@@ -172,7 +172,7 @@ export const es = {
 
   banned: {
     title: "Cuenta suspendida",
-    appeal: "Si crees que es un error, puedes apelar escribiendo a soporte@lingora.app.",
+    appeal: "Si crees que es un error, puedes apelar escribiendo a {email}.",
   },
 
   errors: {

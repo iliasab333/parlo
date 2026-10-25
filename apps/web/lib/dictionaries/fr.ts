@@ -169,7 +169,7 @@ export const fr: Dictionary = {
 
   banned: {
     title: "Compte suspendu",
-    appeal: "Si vous pensez qu'il s'agit d'une erreur, vous pouvez faire appel à soporte@lingora.app.",
+    appeal: "Si vous pensez qu'il s'agit d'une erreur, vous pouvez faire appel à {email}.",
   },
 
   errors: {
