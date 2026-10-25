@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   LANGUAGE_NAMES,
   type Language,
@@ -53,6 +53,15 @@ export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
   const parlo = useParlo(strings);
   const [ageOk, setAgeOk] = useState(false);
   const [reporting, setReporting] = useState(false);
+  // On a phone the chat is a sheet, not a column: a video call needs
+  // the height more than an empty message list does.
+  const [chatOpen, setChatOpen] = useState(false);
+  const [seenCount, setSeenCount] = useState(0);
+
+  const unread = chatOpen ? 0 : Math.max(0, parlo.messages.length - seenCount);
+  useEffect(() => {
+    if (chatOpen) setSeenCount(parlo.messages.length);
+  }, [chatOpen, parlo.messages.length]);
 
   const inSession = parlo.status === "queued" || parlo.status === "matched";
 
@@ -85,7 +94,9 @@ export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
               <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-4.3-1L3 20l1.3-4a8.2 8.2 0 0 1-1.1-4.5 8.4 8.4 0 0 1 8.9-8.4 8.4 8.4 0 0 1 8.9 8.4Z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="font-semibold tracking-tight">{site.name}</span>
+          {/* The wordmark wraps to two lines on a phone and costs more
+              height than it earns during a call. */}
+          <span className="hidden font-semibold tracking-tight sm:inline">{site.name}</span>
         </Link>
 
         <div className="flex items-center gap-4 text-xs text-ink-500">
@@ -140,7 +151,7 @@ export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
 
       {parlo.status === "matched" && parlo.peer && (
         <div className="flex min-h-0 flex-1 flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
             <PeerCard t={t} peer={parlo.peer} />
             <div className="flex flex-wrap items-center gap-2">
               {parlo.timer && (
@@ -148,21 +159,36 @@ export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
               )}
               <button
                 onClick={() => setReporting(true)}
-                className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-danger hover:text-danger"
+                aria-label={t.session.report}
+                title={t.session.report}
+                className="grid size-9 place-items-center rounded-lg border border-ink-700 text-ink-300 transition hover:border-danger hover:text-danger sm:size-auto sm:px-3.5 sm:py-2 sm:text-sm"
               >
-                {t.session.report}
+                <svg viewBox="0 0 24 24" className="size-4 sm:hidden" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 15V4h16l-3 4 3 4H4m0 0v6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="hidden sm:inline">{t.session.report}</span>
               </button>
               <button
                 onClick={parlo.skip}
-                className="rounded-lg bg-ink-800 px-4 py-2 text-sm font-medium transition hover:bg-ink-700"
+                aria-label={t.session.next}
+                title={t.session.next}
+                className="grid size-9 place-items-center rounded-lg bg-ink-800 font-medium transition hover:bg-ink-700 sm:size-auto sm:px-4 sm:py-2 sm:text-sm"
               >
-                {t.session.next}
+                <svg viewBox="0 0 24 24" className="size-4 sm:hidden" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="m5 5 9 7-9 7V5Zm13 0v14" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="hidden sm:inline">{t.session.next}</span>
               </button>
               <button
                 onClick={parlo.stop}
-                className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 hover:border-ink-500"
+                aria-label={t.session.exit}
+                title={t.session.exit}
+                className="grid size-9 place-items-center rounded-lg border border-ink-700 text-ink-300 hover:border-ink-500 sm:size-auto sm:px-3.5 sm:py-2 sm:text-sm"
               >
-                {t.session.exit}
+                <svg viewBox="0 0 24 24" className="size-4 sm:hidden" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M10 19H5V5h5m5 10 4-3-4-3m4 3H9" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="hidden sm:inline">{t.session.exit}</span>
               </button>
             </div>
           </div>
@@ -176,25 +202,65 @@ export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
                 peerName={parlo.peer.displayName ?? t.session.anonymous}
               />
               <FloatingReactions items={parlo.reactions} />
-              <div className="flex justify-center">
+
+              <div className="flex items-center justify-center gap-2">
                 <ReactionBar onReact={parlo.react} />
+                <button
+                  onClick={() => setChatOpen(true)}
+                  aria-label={t.chat.placeholder}
+                  className="relative grid size-9 shrink-0 place-items-center rounded-lg border border-ink-700 text-ink-300 transition hover:border-accent hover:text-accent lg:hidden"
+                >
+                  <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-4.3-1L3 20l1.3-4a8.2 8.2 0 0 1-1.1-4.5 8.4 8.4 0 0 1 8.9-8.4 8.4 8.4 0 0 1 8.9 8.4Z" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {unread > 0 && (
+                    <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-accent text-[10px] font-bold text-ink-950">
+                      {unread > 9 ? "9+" : unread}
+                    </span>
+                  )}
+                </button>
               </div>
             </div>
 
-            <ChatPane
-              t={t}
-              messages={parlo.messages}
-              peerTyping={parlo.peerTyping}
-              disabled={false}
-              onSend={parlo.sendChat}
-              onTyping={parlo.setTyping}
-            />
+            {/* Sheet below lg, ordinary column above it. */}
+            {chatOpen && (
+              <button
+                aria-label={t.report.cancel}
+                onClick={() => setChatOpen(false)}
+                className="fixed inset-0 z-30 bg-ink-950/60 backdrop-blur-sm lg:hidden"
+              />
+            )}
+            <div
+              className={`${
+                chatOpen
+                  ? "fixed inset-x-0 bottom-0 z-40 h-[70dvh] p-3"
+                  : "hidden"
+              } lg:static lg:z-auto lg:block lg:h-auto lg:p-0`}
+            >
+              <div className="flex h-full min-h-0 flex-col">
+                <button
+                  onClick={() => setChatOpen(false)}
+                  className="mx-auto mb-2 h-1 w-10 shrink-0 rounded-full bg-ink-700 lg:hidden"
+                  aria-label={t.report.cancel}
+                />
+                <ChatPane
+                  t={t}
+                  messages={parlo.messages}
+                  peerTyping={parlo.peerTyping}
+                  disabled={false}
+                  onSend={parlo.sendChat}
+                  onTyping={parlo.setTyping}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       {inSession && (
-        <p className="mt-4 text-center text-xs text-ink-500">{t.session.privacyNote}</p>
+        <p className="mt-4 hidden text-center text-xs text-ink-500 sm:block">
+          {t.session.privacyNote}
+        </p>
       )}
 
       {reporting && (

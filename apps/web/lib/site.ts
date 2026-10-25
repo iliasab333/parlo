@@ -4,7 +4,7 @@
  * one of them is the classic way to split your own ranking signals.
  */
 export const site = {
-  name: "Lingora",
+  name: "Practice With Natives",
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://golingora.vercel.app").replace(/\/$/, ""),
   locale: "es_ES",
 

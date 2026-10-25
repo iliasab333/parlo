@@ -79,7 +79,14 @@ export function SessionClock({
                 : "border border-ink-700 text-ink-300 hover:border-accent hover:text-accent"
           }`}
         >
-          {timer.peerWants ? t.session.peerWants : t.session.keepTalking}
+          {/* The full phrase pushes the controls onto a second row at
+              375px, which costs video height that matters more. */}
+          <span className="sm:hidden">
+            {timer.peerWants ? t.session.peerWantsShort : t.session.keepTalkingShort}
+          </span>
+          <span className="hidden sm:inline">
+            {timer.peerWants ? t.session.peerWants : t.session.keepTalking}
+          </span>
         </button>
       )}
     </div>

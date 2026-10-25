@@ -42,7 +42,7 @@ export function ChatPane({
   }
 
   return (
-    <div className="flex min-h-0 flex-col rounded-2xl border border-ink-800 bg-ink-900/60">
+    <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-ink-800 bg-ink-900/60">
       <div className="scroll-slim flex-1 space-y-2.5 overflow-y-auto p-4">
         {messages.length === 0 && (
           <p className="pt-6 text-center text-sm text-ink-500">

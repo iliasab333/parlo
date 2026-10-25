@@ -3,48 +3,26 @@
 import { useEffect, useRef } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
 
-function Tile({
-  stream,
-  muted,
-  label,
-  mirrored,
-  noSignal,
-}: {
-  stream: MediaStream | null;
-  muted?: boolean;
-  label: string;
-  mirrored?: boolean;
-  noSignal: string;
-}) {
+function useStream(stream: MediaStream | null) {
   const ref = useRef<HTMLVideoElement>(null);
-
   useEffect(() => {
     if (ref.current && ref.current.srcObject !== stream) {
       ref.current.srcObject = stream;
     }
   }, [stream]);
-
-  return (
-    <div className="relative overflow-hidden rounded-2xl border border-ink-800 bg-ink-900">
-      <video
-        ref={ref}
-        autoPlay
-        playsInline
-        muted={muted}
-        className={`size-full object-cover ${mirrored ? "-scale-x-100" : ""}`}
-      />
-      {!stream && (
-        <div className="absolute inset-0 grid place-items-center text-sm text-ink-500">
-{noSignal}
-        </div>
-      )}
-      <span className="absolute bottom-2.5 left-2.5 rounded-md bg-ink-950/70 px-2 py-1 text-xs font-medium backdrop-blur">
-        {label}
-      </span>
-    </div>
-  );
+  return ref;
 }
 
+/**
+ * The other person fills the frame; you are a thumbnail on top of it.
+ *
+ * Two equal tiles stacked is what a desktop layout does to a phone:
+ * with the header, the clock, the reaction bar and the chat all asking
+ * for height, neither video ended up big enough to read a face. Every
+ * video-call product converges on remote-full + local-PiP for the same
+ * reason — the conversation is with THEM, and your own camera only has
+ * to answer "is my face in shot".
+ */
 export function VideoStage({
   t,
   local,
@@ -56,10 +34,42 @@ export function VideoStage({
   remote: MediaStream | null;
   peerName: string;
 }) {
+  const remoteRef = useStream(remote);
+  const localRef = useStream(local);
+
   return (
-    <div className="grid flex-1 grid-rows-2 gap-3 sm:grid-cols-2 sm:grid-rows-1">
-      <Tile stream={remote} label={peerName} noSignal={t.session.noSignal} />
-      <Tile stream={local} muted label={t.session.you} mirrored noSignal={t.session.noSignal} />
+    <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-800 bg-ink-900">
+      <video
+        ref={remoteRef}
+        autoPlay
+        playsInline
+        className="size-full object-cover"
+      />
+
+      {!remote && (
+        <div className="absolute inset-0 grid place-items-center text-sm text-ink-500">
+          {t.session.noSignal}
+        </div>
+      )}
+
+      <span className="absolute left-3 top-3 rounded-lg bg-ink-950/70 px-2.5 py-1 text-xs font-medium backdrop-blur">
+        {peerName}
+      </span>
+
+      {/* Sits above the reaction bar so a drifting emoji never lands on
+          your own face, and stays clear of the bottom safe area. */}
+      <div className="absolute bottom-3 right-3 w-24 overflow-hidden rounded-xl border border-ink-700 bg-ink-950 shadow-lg sm:w-32">
+        <video
+          ref={localRef}
+          autoPlay
+          playsInline
+          muted
+          className="aspect-[3/4] w-full -scale-x-100 object-cover"
+        />
+        <span className="absolute bottom-1 left-1.5 text-[10px] font-medium text-ink-100/90 drop-shadow">
+          {t.session.you}
+        </span>
+      </div>
     </div>
   );
 }

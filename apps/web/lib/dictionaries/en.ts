@@ -16,7 +16,7 @@ export const en: Dictionary = {
     eyebrow: "Language exchange, live",
     headline: "Talk to a native speaker right now.",
     headlineMuted: "Not in three weeks.",
-    lede: "Lingora pairs you at random with someone on the other side of the world who speaks what you're learning and is learning what you speak. Two minutes to start, and you carry on if you both want to.",
+    lede: "Practice With Natives pairs you at random with someone on the other side of the world who speaks what you're learning and is learning what you speak. Two minutes to start, and you carry on if you both want to.",
     cta: "Start talking",
     ctaNote: "Age verification required · Free",
     steps: [
@@ -39,13 +39,13 @@ export const en: Dictionary = {
     faqTitle: "Frequently asked questions",
     faq: [
       {
-        q: "What is Lingora?",
+        q: "What is Practice With Natives?",
         a: "A language-exchange video chat. It pairs you at random with a native speaker of the language you're studying, who is learning yours. Conversations start at two minutes and only run longer if you both want them to.",
       },
       { q: "Is it free?", a: "Yes. Matching and conversations are free." },
       {
         q: "Do I need an account?",
-        a: "You don't need to create one. You do have to confirm you're 18 or over: Lingora pairs strangers over video and is an adults-only platform.",
+        a: "You don't need to create one. You do have to confirm you're 18 or over: Practice With Natives pairs strangers over video and is an adults-only platform.",
       },
       {
         q: "Are conversations recorded?",
@@ -57,12 +57,12 @@ export const en: Dictionary = {
       },
     ],
     footer:
-      "Lingora is a platform for adults aged 18 and over. We moderate actively, we do not record conversations, and we report child sexual abuse material to the relevant authorities.",
+      "Practice With Natives is a platform for adults aged 18 and over. We moderate actively, we do not record conversations, and we report child sexual abuse material to the relevant authorities.",
   },
 
   gate: {
     title: "Age verification",
-    body: "Lingora is strictly for people aged 18 and over. We pair strangers over video, so this check is not a formality.",
+    body: "Practice With Natives is strictly for people aged 18 and over. We pair strangers over video, so this check is not a formality.",
     pendingLabel: "Integration pending:",
     pending:
       "in production this step must call an age-assurance provider. The checkbox below is a development placeholder only.",
@@ -125,6 +125,8 @@ export const en: Dictionary = {
     exit: "Leave",
     unlimited: "No time limit",
     keepTalking: "Keep talking",
+    keepTalkingShort: "Stay",
+    peerWantsShort: "Stay too?",
     peerWants: "They want to stay — you?",
     waitingPeer: "Waiting for your partner…",
     bothIn: "You're both in!",
@@ -174,7 +176,7 @@ export const en: Dictionary = {
 
   errors: {
     camera:
-      "Lingora needs your camera and microphone. Check your browser permissions and try again.",
+      "Practice With Natives needs your camera and microphone. Check your browser permissions and try again.",
     misconfigured:
       "Incomplete configuration: NEXT_PUBLIC_SIGNAL_URL points at ws:// from an https page. The signalling server needs wss://.",
     closed: "Connection closed.",
@@ -188,7 +190,7 @@ export const en: Dictionary = {
     descriptionTemplate:
       "Speak {lang} with native speakers who are learning your language. Random matching, free, nothing to schedule. Strictly 18+.",
     intro:
-      "Lingora pairs you at random with native speakers who are learning your language. They practice with you, you practice with them, and the conversation lasts as long as you both want it to.",
+      "Practice With Natives pairs you at random with native speakers who are learning your language. They practice with you, you practice with them, and the conversation lasts as long as you both want it to.",
     ctaTemplate: "Start speaking {lang}",
     howTitle: "How it works",
     howSteps: [
@@ -200,7 +202,7 @@ export const en: Dictionary = {
     faq: [
       {
         q: "Is it free?",
-        a: "Yes. Matching and conversations are free. Lingora runs on reciprocity: you offer your language to someone studying it, and they offer you theirs.",
+        a: "Yes. Matching and conversations are free. Practice With Natives runs on reciprocity: you offer your language to someone studying it, and they offer you theirs.",
       },
       {
         q: "Do I need a minimum level?",
@@ -208,7 +210,7 @@ export const en: Dictionary = {
       },
       {
         q: "Do I need an account?",
-        a: "You don't need one to start. You do have to confirm you're 18 or over: Lingora pairs strangers over video and is an adults-only platform.",
+        a: "You don't need one to start. You do have to confirm you're 18 or over: Practice With Natives pairs strangers over video and is an adults-only platform.",
       },
       {
         q: "Can I choose who I talk to?",
