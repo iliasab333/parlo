@@ -52,3 +52,20 @@ body {
   border: 2px solid var(--color-accent);
   animation: pulse-ring 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
+
+/* Reactions drift up and fade; the element is dropped from state when
+   the animation would end, so nothing accumulates in the DOM. */
+@keyframes reaction-rise {
+  0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+  12%  { transform: translateY(-10px) scale(1.15); opacity: 1; }
+  100% { transform: translateY(-190px) scale(0.9) rotate(8deg); opacity: 0; }
+}
+.reaction-float {
+  animation: reaction-rise 2.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reaction-float { animation-duration: 1.2s; }
+  .pulse-ring::after { animation: none; }
+}

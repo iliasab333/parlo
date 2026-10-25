@@ -12,10 +12,11 @@
     "dev:web": "npm run dev --workspace=@parlo/web",
     "build": "npm run build --workspace=@parlo/protocol && npm run build --workspace=@parlo/signal && npm run build --workspace=@parlo/web",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "node scripts/smoke.mjs && node scripts/moderation.mjs",
+    "test": "node scripts/smoke.mjs && node scripts/moderation.mjs && node scripts/session.mjs",
     "test:match": "node scripts/smoke.mjs",
     "test:moderation": "node scripts/moderation.mjs",
-    "db:migrate": "psql \"$DATABASE_URL\" -f db/migrations/001_moderation.sql"
+    "db:migrate": "psql \"$DATABASE_URL\" -f db/migrations/001_moderation.sql",
+    "test:session": "node scripts/session.mjs"
   },
   "engines": {
     "node": ">=20"

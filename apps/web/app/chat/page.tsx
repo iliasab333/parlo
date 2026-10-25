@@ -9,6 +9,8 @@ import { SetupPanel } from "@/components/SetupPanel";
 import { VideoStage } from "@/components/VideoStage";
 import { ChatPane } from "@/components/ChatPane";
 import { ReportDialog } from "@/components/ReportDialog";
+import { SessionClock } from "@/components/SessionClock";
+import { ReactionBar, FloatingReactions } from "@/components/Reactions";
 
 function PeerCard({ peer }: { peer: PublicProfile }) {
   return (
@@ -127,7 +129,10 @@ export default function ChatPage() {
         <div className="flex min-h-0 flex-1 flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <PeerCard peer={parlo.peer} />
-            <div className="flex gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {parlo.timer && (
+                <SessionClock timer={parlo.timer} onExtend={parlo.extend} />
+              )}
               <button
                 onClick={() => setReporting(true)}
                 className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-danger hover:text-danger"
@@ -150,11 +155,17 @@ export default function ChatPage() {
           </div>
 
           <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.6fr_1fr]">
-            <VideoStage
-              local={parlo.localStream}
-              remote={parlo.remoteStream}
-              peerName={parlo.peer.displayName ?? "Anónimo"}
-            />
+            <div className="relative flex min-h-0 flex-col gap-3">
+              <VideoStage
+                local={parlo.localStream}
+                remote={parlo.remoteStream}
+                peerName={parlo.peer.displayName ?? "Anónimo"}
+              />
+              <FloatingReactions items={parlo.reactions} />
+              <div className="flex justify-center">
+                <ReactionBar onReact={parlo.react} />
+              </div>
+            </div>
 
             <ChatPane
               messages={parlo.messages}

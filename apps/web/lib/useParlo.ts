@@ -7,6 +7,7 @@ import type {
   Prefs,
   Profile,
   PublicProfile,
+  Reaction,
   ServerMessage,
 } from "@parlo/protocol";
 
@@ -29,6 +30,20 @@ export interface ChatLine {
   at: number;
 }
 
+/** A reaction in flight, rendered as a floating glyph then dropped. */
+export interface FloatingReaction {
+  id: string;
+  reaction: Reaction;
+  mine: boolean;
+}
+
+export interface SessionTimer {
+  endsAt: number;
+  youWant: boolean;
+  peerWants: boolean;
+  round: number;
+}
+
 export interface ParloState {
   status: Status;
   error: string | null;
@@ -39,6 +54,8 @@ export interface ParloState {
   peerTyping: boolean;
   localStream: MediaStream | null;
   remoteStream: MediaStream | null;
+  timer: SessionTimer | null;
+  reactions: FloatingReaction[];
 }
 
 export function useParlo() {
@@ -51,6 +68,8 @@ export function useParlo() {
     peerTyping: false,
     localStream: null,
     remoteStream: null,
+    timer: null,
+    reactions: [],
   });
 
   const ws = useRef<WebSocket | null>(null);
@@ -65,6 +84,16 @@ export function useParlo() {
       ...s,
       messages: [...s.messages, { ...line, id: crypto.randomUUID() }],
     }));
+  }, []);
+
+  /** Queue a floating glyph and drop it again once it has flown. */
+  const showReaction = useCallback((reaction: Reaction, mine: boolean) => {
+    const id = crypto.randomUUID();
+    setState((s) => ({ ...s, reactions: [...s.reactions, { id, reaction, mine }] }));
+    setTimeout(
+      () => setState((s) => ({ ...s, reactions: s.reactions.filter((r) => r.id !== id) })),
+      2600,
+    );
   }, []);
 
   const send = useCallback((msg: ClientMessage) => {
@@ -208,8 +237,31 @@ export function useParlo() {
           break;
 
         case "matched":
-          setState((s) => ({ ...s, status: "matched", peer: msg.peer, messages: [] }));
+          setState((s) => ({
+            ...s,
+            status: "matched",
+            peer: msg.peer,
+            messages: [],
+            reactions: [],
+            timer: { endsAt: msg.endsAt, youWant: false, peerWants: false, round: 0 },
+          }));
           createPeer(msg.iceServers, msg.polite);
+          break;
+
+        case "timer":
+          setState((s) => ({
+            ...s,
+            timer: {
+              endsAt: msg.endsAt,
+              youWant: msg.youWant,
+              peerWants: msg.peerWants,
+              round: msg.round,
+            },
+          }));
+          break;
+
+        case "react":
+          showReaction(msg.reaction, false);
           break;
 
         case "signal":
@@ -233,7 +285,7 @@ export function useParlo() {
 
         case "peer-left":
           teardownPeer();
-          setState((s) => ({ ...s, peer: null }));
+          setState((s) => ({ ...s, peer: null, timer: null }));
           push({
             from: "system",
             at: Date.now(),
@@ -242,7 +294,9 @@ export function useParlo() {
                 ? "Tu compañero pasó a otra conversación."
                 : msg.reason === "reported"
                   ? "Conversación finalizada."
-                  : "Tu compañero se desconectó.",
+                  : msg.reason === "timeout"
+                    ? "Se acabó el tiempo. Buscando a otra persona…"
+                    : "Tu compañero se desconectó.",
           });
           break;
 
@@ -286,7 +340,7 @@ export function useParlo() {
       pc.current?.close();
       localStream.current?.getTracks().forEach((t) => t.stop());
     };
-  }, [createPeer, handleSignal, push, teardownPeer]);
+  }, [createPeer, handleSignal, push, showReaction, teardownPeer]);
 
   /* ----------------------------- actions --------------------------- */
 
@@ -342,6 +396,16 @@ export function useParlo() {
 
   const setTyping = useCallback((on: boolean) => send({ t: "typing", on }), [send]);
 
+  const extend = useCallback(() => send({ t: "extend" }), [send]);
+
+  const react = useCallback(
+    (reaction: Reaction) => {
+      send({ t: "react", reaction });
+      showReaction(reaction, true);
+    },
+    [send, showReaction],
+  );
+
   const report = useCallback(
     (reason: "nudity" | "minor" | "harassment" | "spam" | "violence" | "other", note?: string) => {
       send({ t: "report", reason, note });
@@ -350,5 +414,5 @@ export function useParlo() {
     [send, teardownPeer],
   );
 
-  return { ...state, start, skip, stop, sendChat, setTyping, report };
+  return { ...state, start, skip, stop, sendChat, setTyping, report, extend, react };
 }

@@ -42,6 +42,12 @@ interface Room {
   a: string;
   b: string;
   startedAt: number;
+  /** Epoch ms the conversation ends; Infinity once it goes unlimited. */
+  endsAt: number;
+  /** Session ids that have asked to continue THIS round. */
+  wantMore: Set<string>;
+  /** How many times both sides have agreed to carry on. */
+  round: number;
 }
 
 const sessions = new Map<string, Session>();
@@ -97,7 +103,11 @@ function queued(): Waiter[] {
 }
 
 /** Tear down a room and tell the other side why. */
-function closeRoom(roomId: string, reason: "skip" | "disconnect" | "reported", initiator?: string) {
+function closeRoom(
+  roomId: string,
+  reason: "skip" | "disconnect" | "reported" | "timeout",
+  initiator?: string,
+) {
   const room = rooms.get(roomId);
   if (!room) return;
   rooms.delete(roomId);
@@ -115,6 +125,39 @@ function enterQueue(session: Session) {
   send(session, { t: "queued", waiting: queued().length });
 }
 
+/** Tell both sides where the clock stands and who has asked to stay. */
+function broadcastTimer(room: Room) {
+  for (const id of [room.a, room.b]) {
+    const s = sessions.get(id);
+    if (!s) continue;
+    const peerId = room.a === id ? room.b : room.a;
+    send(s, {
+      t: "timer",
+      endsAt: room.endsAt,
+      youWant: room.wantMore.has(id),
+      peerWants: room.wantMore.has(peerId),
+      round: room.round,
+    });
+  }
+}
+
+/**
+ * Expire conversations nobody asked to keep. Both sides go straight
+ * back into the queue: the whole point of a timer is that leaving is
+ * the default, so nobody has to be the one who ends it.
+ */
+setInterval(() => {
+  const now = Date.now();
+  for (const room of [...rooms.values()]) {
+    if (now < room.endsAt) continue;
+    const members = [room.a, room.b]
+      .map((id) => sessions.get(id))
+      .filter((s): s is Session => Boolean(s));
+    closeRoom(room.id, "timeout");
+    for (const s of members) if (s.profile && s.prefs) enterQueue(s);
+  }
+}, 1_000);
+
 /* ------------------------------ matcher --------------------------- */
 
 setInterval(() => {
@@ -126,7 +169,16 @@ setInterval(() => {
     if (!sa || !sb) continue;
 
     const roomId = randomUUID();
-    rooms.set(roomId, { id: roomId, a: sa.id, b: sb.id, startedAt: Date.now() });
+    const endsAt = Date.now() + config.session.initialMs;
+    rooms.set(roomId, {
+      id: roomId,
+      a: sa.id,
+      b: sb.id,
+      startedAt: Date.now(),
+      endsAt,
+      wantMore: new Set(),
+      round: 0,
+    });
     sa.roomId = sb.roomId = roomId;
     sa.queuedAt = sb.queuedAt = undefined;
 
@@ -134,8 +186,8 @@ setInterval(() => {
 
     // Perfect negotiation needs exactly one polite peer; the server is
     // the only party that can assign that without a race.
-    send(sa, { t: "matched", roomId, peer: publicProfile(sb, sa), polite: true, iceServers });
-    send(sb, { t: "matched", roomId, peer: publicProfile(sa, sb), polite: false, iceServers });
+    send(sa, { t: "matched", roomId, peer: publicProfile(sb, sa), polite: true, iceServers, endsAt });
+    send(sb, { t: "matched", roomId, peer: publicProfile(sa, sb), polite: false, iceServers, endsAt });
   }
 }, config.tickMs);
 
@@ -327,6 +379,35 @@ wss.on("connection", (ws, req) => {
       case "typing": {
         const peer = peerOf(session);
         if (peer) send(peer, { t: "typing", on: msg.on });
+        break;
+      }
+
+      case "extend": {
+        const room = session.roomId ? rooms.get(session.roomId) : undefined;
+        if (!room) {
+          fail(session, "no_room", "Nothing to extend.");
+          return;
+        }
+        room.wantMore.add(session.id);
+
+        // One-sided interest is never enough. Staying has to be a
+        // decision both people make, or the countdown is theatre.
+        const bothWant = room.wantMore.has(room.a) && room.wantMore.has(room.b);
+        if (bothWant) {
+          room.round += 1;
+          room.wantMore.clear();
+          room.endsAt =
+            room.round >= config.session.unlimitedAfterRounds
+              ? Number.MAX_SAFE_INTEGER
+              : Date.now() + config.session.extendMs;
+        }
+        broadcastTimer(room);
+        break;
+      }
+
+      case "react": {
+        const peer = peerOf(session);
+        if (peer) send(peer, { t: "react", reaction: msg.reaction });
         break;
       }
 

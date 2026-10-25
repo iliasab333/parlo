@@ -22,6 +22,18 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
   zh: "中文", vi: "Tiếng Việt", th: "ไทย", sv: "Svenska", uk: "Українська",
 };
 
+/**
+ * A closed set, deliberately. Free-text "reactions" are just another
+ * chat channel to moderate, and an emoji picker invites the ones you
+ * least want on a stranger's screen.
+ */
+export const REACTIONS = ["wave", "laugh", "heart", "clap", "mindblown", "thumbsup"] as const;
+export type Reaction = (typeof REACTIONS)[number];
+
+export const REACTION_GLYPH: Record<Reaction, string> = {
+  wave: "👋", laugh: "😂", heart: "❤️", clap: "👏", mindblown: "🤯", thumbsup: "👍",
+};
+
 export const GENDERS = ["female", "male", "nonbinary", "undisclosed"] as const;
 export type Gender = (typeof GENDERS)[number];
 
@@ -94,6 +106,9 @@ export const clientMessageSchema = z.discriminatedUnion("t", [
   }),
   z.object({ t: z.literal("chat"), text: z.string().min(1).max(2000) }),
   z.object({ t: z.literal("typing"), on: z.boolean() }),
+  /** Ask to keep the conversation going. Both sides must ask. */
+  z.object({ t: z.literal("extend") }),
+  z.object({ t: z.literal("react"), reaction: z.enum(REACTIONS) }),
   z.object({
     t: z.literal("report"),
     reason: z.enum([
@@ -125,11 +140,22 @@ export type ServerMessage =
       /** Perfect-negotiation role. Exactly one side is polite. */
       polite: boolean;
       iceServers: IceServer[];
+      /** Epoch ms when this conversation ends unless both extend. */
+      endsAt: number;
     }
   | { t: "signal"; payload: unknown }
+  | {
+      t: "timer";
+      endsAt: number;
+      /** Whether each side has asked to continue this round. */
+      youWant: boolean;
+      peerWants: boolean;
+      round: number;
+    }
+  | { t: "react"; reaction: Reaction }
   | { t: "chat"; text: string; at: number }
   | { t: "typing"; on: boolean }
-  | { t: "peer-left"; reason: "skip" | "disconnect" | "reported" }
+  | { t: "peer-left"; reason: "skip" | "disconnect" | "reported" | "timeout" }
   | { t: "stats"; online: number; waiting: number }
   | { t: "banned"; until: number; reason: string }
   | { t: "error"; code: string; message: string }

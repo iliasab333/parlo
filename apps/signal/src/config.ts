@@ -55,6 +55,20 @@ export const config = {
 
   heartbeatMs: num(process.env.HEARTBEAT_MS, 30_000),
 
+  session: {
+    /**
+     * A conversation ends on its own unless BOTH sides ask to keep it.
+     * The countdown is the point: it removes the awkwardness of being
+     * the one who leaves, which is what makes people willing to start
+     * a conversation with a stranger at all.
+     */
+    initialMs: num(process.env.SESSION_MS, 120_000),
+    /** Each agreed extension is longer than the last. */
+    extendMs: num(process.env.SESSION_EXTEND_MS, 180_000),
+    /** Rounds after which the timer stops entirely. */
+    unlimitedAfterRounds: num(process.env.SESSION_UNLIMITED_AFTER, 3),
+  },
+
   rateLimit: {
     /** Messages per session per 10s window, across all message types. */
     messagesPer10s: num(process.env.RL_MESSAGES, 80),
