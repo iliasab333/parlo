@@ -61,24 +61,35 @@ necesita un proceso de larga duración — Fly.io, Railway o Render.
 
 | Pieza | Dónde | Estado |
 |---|---|---|
-| `apps/web` | Vercel — <https://parlo-seven.vercel.app> | **desplegada** |
-| `apps/signal` | pendiente de elegir host | **no desplegada** |
+| `apps/web` | Vercel — <https://parlo-seven.vercel.app> | **en producción** |
+| `apps/signal` | Render — <https://parlo-signal.onrender.com> | **en producción** |
 | Postgres | pendiente de aprovisionar | **no existe** |
+| TURN | no contratado | **no existe** |
 
-**El chat no funciona en producción todavía**, y es intencionado: sin
-servidor de señalización no hay emparejamiento. La web lo dice en pantalla
-en vez de fallar en silencio — ver la guardia de contenido mixto en
-`apps/web/lib/useParlo.ts`.
+Verificado de punta a punta en producción: emparejamiento por
+complementariedad, rol *polite* repartido, chat relevado, y el allowlist
+de orígenes devolviendo 403 a cualquier origen que no sea el de Vercel.
 
-Cuando el servidor de señalización tenga URL, basta con:
+**Dos limitaciones activas ahora mismo:**
+
+1. **El plan gratuito de Render duerme el servicio** tras ~15 min sin
+   tráfico. Al despertar tarda unos 50 s, y el reinicio **borra el store
+   de moderación en memoria**: sin `DATABASE_URL`, los baneos no
+   sobreviven a una siesta.
+2. **Solo hay STUN, no TURN.** El 10-20% de usuarios tras NAT simétrico
+   verá pantalla negra. Ver «TURN no es opcional» más abajo.
+
+`NEXT_PUBLIC_SIGNAL_URL` se incrusta en tiempo de build: si la cambias,
+hay que **volver a desplegar**, no basta con guardarla.
 
 ```bash
-npx vercel env add NEXT_PUBLIC_SIGNAL_URL production   # wss://tu-host
+npx vercel env add NEXT_PUBLIC_SIGNAL_URL production
 npx vercel deploy --prod
 ```
 
-La variable se incrusta en tiempo de build, así que hay que **volver a
-desplegar** después de cambiarla; no basta con guardarla.
+El repositorio es **público** porque Render está conectado a otra cuenta
+de GitHub y clonar por URL fue el camino corto. No hay secretos dentro
+—  todo va por variables de entorno — pero tenlo presente.
 
 ---
 

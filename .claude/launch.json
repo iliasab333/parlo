@@ -22,13 +22,13 @@
       "port": 3000
     },
     {
-      "name": "buscobarato-node",
+      "name": "buscobarato-next",
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-lc",
-        "cd /Users/bigseo/buscobarato && SITES_LOCAL_RUNTIME=node corepack pnpm run dev"
+        "cd /Users/bigseo/buscobarato && corepack pnpm dev"
       ],
-      "port": 5173
+      "port": 3000
     }
   ]
 }
