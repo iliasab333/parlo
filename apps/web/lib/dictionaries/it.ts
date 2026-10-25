@@ -16,7 +16,7 @@ export const it: Dictionary = {
     eyebrow: "Scambio linguistico, dal vivo",
     headline: "Parla con un madrelingua adesso.",
     headlineMuted: "Non fra tre settimane.",
-    lede: "Parlo ti abbina a caso con qualcuno dall'altra parte del mondo che parla ciò che studi e studia ciò che parli. Due minuti per iniziare, e si continua se lo volete entrambi.",
+    lede: "Lingora ti abbina a caso con qualcuno dall'altra parte del mondo che parla ciò che studi e studia ciò che parli. Due minuti per iniziare, e si continua se lo volete entrambi.",
     cta: "Inizia a parlare",
     ctaNote: "Richiede la verifica dell'età · Gratis",
     steps: [
@@ -39,13 +39,13 @@ export const it: Dictionary = {
     faqTitle: "Domande frequenti",
     faq: [
       {
-        q: "Che cos'è Parlo?",
+        q: "Che cos'è Lingora?",
         a: "Una videochat di scambio linguistico. Ti abbina a caso con un madrelingua della lingua che studi, che a sua volta sta imparando la tua. Le conversazioni partono da due minuti e si allungano solo se lo volete entrambi.",
       },
       { q: "È gratis?", a: "Sì. L'abbinamento e le conversazioni sono gratuiti." },
       {
         q: "Serve registrarsi?",
-        a: "Non devi creare un account. Devi però confermare di avere almeno 18 anni: Parlo abbina sconosciuti in video ed è una piattaforma esclusivamente per adulti.",
+        a: "Non devi creare un account. Devi però confermare di avere almeno 18 anni: Lingora abbina sconosciuti in video ed è una piattaforma esclusivamente per adulti.",
       },
       {
         q: "Le conversazioni vengono registrate?",
@@ -57,12 +57,12 @@ export const it: Dictionary = {
       },
     ],
     footer:
-      "Parlo è una piattaforma per maggiori di 18 anni. Moderiamo attivamente, non registriamo le conversazioni e segnaliamo materiale pedopornografico alle autorità competenti.",
+      "Lingora è una piattaforma per maggiori di 18 anni. Moderiamo attivamente, non registriamo le conversazioni e segnaliamo materiale pedopornografico alle autorità competenti.",
   },
 
   gate: {
     title: "Verifica dell'età",
-    body: "Parlo è riservato ai maggiori di 18 anni. Abbiniamo sconosciuti in video, quindi questa verifica non è una formalità.",
+    body: "Lingora è riservato ai maggiori di 18 anni. Abbiniamo sconosciuti in video, quindi questa verifica non è una formalità.",
     pendingLabel: "Integrazione in sospeso:",
     pending:
       "in produzione questo passaggio deve richiamare un fornitore di verifica dell'età. La casella qui sotto è solo un segnaposto di sviluppo.",
@@ -74,7 +74,7 @@ export const it: Dictionary = {
     title: "Configura la sessione",
     lede: "Ti abbineremo a qualcuno di compatibile.",
     connecting: "Connessione al server…",
-    speak: "Parlo correntemente",
+    speak: "Lingora correntemente",
     speakHint: "cosa offri",
     learn: "Voglio praticare",
     learnHint: "cosa cerchi",
@@ -169,12 +169,12 @@ export const it: Dictionary = {
 
   banned: {
     title: "Account sospeso",
-    appeal: "Se pensi che sia un errore, puoi fare ricorso scrivendo a soporte@parlo.example.",
+    appeal: "Se pensi che sia un errore, puoi fare ricorso scrivendo a soporte@lingora.app.",
   },
 
   errors: {
     camera:
-      "Parlo ha bisogno di fotocamera e microfono. Controlla i permessi del browser e riprova.",
+      "Lingora ha bisogno di fotocamera e microfono. Controlla i permessi del browser e riprova.",
     misconfigured:
       "Configurazione incompleta: NEXT_PUBLIC_SIGNAL_URL punta a ws:// da una pagina https. Il server di segnalazione richiede wss://.",
     closed: "Connessione chiusa.",
@@ -188,7 +188,7 @@ export const it: Dictionary = {
     descriptionTemplate:
       "Parla {lang} con madrelingua che stanno imparando la tua lingua. Abbinamento casuale, gratis, niente da programmare. Solo maggiori di 18 anni.",
     intro:
-      "Parlo ti abbina a caso con madrelingua che stanno imparando la tua lingua. Loro praticano con te, tu pratichi con loro, e la conversazione dura quanto volete entrambi.",
+      "Lingora ti abbina a caso con madrelingua che stanno imparando la tua lingua. Loro praticano con te, tu pratichi con loro, e la conversazione dura quanto volete entrambi.",
     ctaTemplate: "Inizia a parlare {lang}",
     howTitle: "Come funziona",
     howSteps: [
@@ -200,7 +200,7 @@ export const it: Dictionary = {
     faq: [
       {
         q: "È gratis?",
-        a: "Sì. L'abbinamento e le conversazioni sono gratuiti. Parlo funziona per reciprocità: offri la tua lingua a chi la studia e quella persona ti offre la sua.",
+        a: "Sì. L'abbinamento e le conversazioni sono gratuiti. Lingora funziona per reciprocità: offri la tua lingua a chi la studia e quella persona ti offre la sua.",
       },
       {
         q: "Serve un livello minimo?",
@@ -208,7 +208,7 @@ export const it: Dictionary = {
       },
       {
         q: "Serve registrarsi?",
-        a: "Non serve creare un account per iniziare. Devi però confermare di avere almeno 18 anni: Parlo abbina sconosciuti in video ed è una piattaforma esclusivamente per adulti.",
+        a: "Non serve creare un account per iniziare. Devi però confermare di avere almeno 18 anni: Lingora abbina sconosciuti in video ed è una piattaforma esclusivamente per adulti.",
       },
       {
         q: "Posso scegliere con chi parlo?",

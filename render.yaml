@@ -31,8 +31,11 @@ services:
 
       # Lock the WebSocket upgrade to the deployed front end. Leaving
       # this at "*" lets any origin drive your signalling server.
+      # Both public domains. parloapp is the canonical one; the
+      # auto-generated parlo-seven alias still resolves and would 403
+      # here if it were dropped.
       - key: ALLOWED_ORIGINS
-        value: https://parlo-seven.vercel.app
+        value: https://golingora.vercel.app,https://parloapp.vercel.app,https://parlo-seven.vercel.app
 
       # Signs device tokens. Rotating it invalidates every active ban,
       # so let Render generate it once and leave it alone.

@@ -11,6 +11,7 @@ import {
 } from "@parlo/protocol";
 import type { Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
+import { site } from "@/lib/site";
 import { useParlo } from "@/lib/useParlo";
 import { AgeGate } from "@/components/AgeGate";
 import { SetupPanel } from "@/components/SetupPanel";
@@ -82,7 +83,7 @@ export function ChatClient({ t, locale }: { t: Dictionary; locale: Locale }) {
               <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-4.3-1L3 20l1.3-4a8.2 8.2 0 0 1-1.1-4.5 8.4 8.4 0 0 1 8.9-8.4 8.4 8.4 0 0 1 8.9 8.4Z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="font-semibold tracking-tight">Parlo</span>
+          <span className="font-semibold tracking-tight">{site.name}</span>
         </Link>
 
         <div className="flex items-center gap-4 text-xs text-ink-500">

@@ -4,7 +4,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { LOCALES, isLocale } from "@/lib/i18n";
 import { site } from "@/lib/site";
 
-export const alt = "Practicar idiomas con nativos en Parlo";
+export const alt = site.name;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

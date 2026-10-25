@@ -16,7 +16,7 @@ export const en: Dictionary = {
     eyebrow: "Language exchange, live",
     headline: "Talk to a native speaker right now.",
     headlineMuted: "Not in three weeks.",
-    lede: "Parlo pairs you at random with someone on the other side of the world who speaks what you're learning and is learning what you speak. Two minutes to start, and you carry on if you both want to.",
+    lede: "Lingora pairs you at random with someone on the other side of the world who speaks what you're learning and is learning what you speak. Two minutes to start, and you carry on if you both want to.",
     cta: "Start talking",
     ctaNote: "Age verification required · Free",
     steps: [
@@ -39,13 +39,13 @@ export const en: Dictionary = {
     faqTitle: "Frequently asked questions",
     faq: [
       {
-        q: "What is Parlo?",
+        q: "What is Lingora?",
         a: "A language-exchange video chat. It pairs you at random with a native speaker of the language you're studying, who is learning yours. Conversations start at two minutes and only run longer if you both want them to.",
       },
       { q: "Is it free?", a: "Yes. Matching and conversations are free." },
       {
         q: "Do I need an account?",
-        a: "You don't need to create one. You do have to confirm you're 18 or over: Parlo pairs strangers over video and is an adults-only platform.",
+        a: "You don't need to create one. You do have to confirm you're 18 or over: Lingora pairs strangers over video and is an adults-only platform.",
       },
       {
         q: "Are conversations recorded?",
@@ -57,12 +57,12 @@ export const en: Dictionary = {
       },
     ],
     footer:
-      "Parlo is a platform for adults aged 18 and over. We moderate actively, we do not record conversations, and we report child sexual abuse material to the relevant authorities.",
+      "Lingora is a platform for adults aged 18 and over. We moderate actively, we do not record conversations, and we report child sexual abuse material to the relevant authorities.",
   },
 
   gate: {
     title: "Age verification",
-    body: "Parlo is strictly for people aged 18 and over. We pair strangers over video, so this check is not a formality.",
+    body: "Lingora is strictly for people aged 18 and over. We pair strangers over video, so this check is not a formality.",
     pendingLabel: "Integration pending:",
     pending:
       "in production this step must call an age-assurance provider. The checkbox below is a development placeholder only.",
@@ -169,12 +169,12 @@ export const en: Dictionary = {
 
   banned: {
     title: "Account suspended",
-    appeal: "If you think this is a mistake, you can appeal at soporte@parlo.example.",
+    appeal: "If you think this is a mistake, you can appeal at soporte@lingora.app.",
   },
 
   errors: {
     camera:
-      "Parlo needs your camera and microphone. Check your browser permissions and try again.",
+      "Lingora needs your camera and microphone. Check your browser permissions and try again.",
     misconfigured:
       "Incomplete configuration: NEXT_PUBLIC_SIGNAL_URL points at ws:// from an https page. The signalling server needs wss://.",
     closed: "Connection closed.",
@@ -188,7 +188,7 @@ export const en: Dictionary = {
     descriptionTemplate:
       "Speak {lang} with native speakers who are learning your language. Random matching, free, nothing to schedule. Strictly 18+.",
     intro:
-      "Parlo pairs you at random with native speakers who are learning your language. They practise with you, you practise with them, and the conversation lasts as long as you both want it to.",
+      "Lingora pairs you at random with native speakers who are learning your language. They practise with you, you practise with them, and the conversation lasts as long as you both want it to.",
     ctaTemplate: "Start speaking {lang}",
     howTitle: "How it works",
     howSteps: [
@@ -200,7 +200,7 @@ export const en: Dictionary = {
     faq: [
       {
         q: "Is it free?",
-        a: "Yes. Matching and conversations are free. Parlo runs on reciprocity: you offer your language to someone studying it, and they offer you theirs.",
+        a: "Yes. Matching and conversations are free. Lingora runs on reciprocity: you offer your language to someone studying it, and they offer you theirs.",
       },
       {
         q: "Do I need a minimum level?",
@@ -208,7 +208,7 @@ export const en: Dictionary = {
       },
       {
         q: "Do I need an account?",
-        a: "You don't need one to start. You do have to confirm you're 18 or over: Parlo pairs strangers over video and is an adults-only platform.",
+        a: "You don't need one to start. You do have to confirm you're 18 or over: Lingora pairs strangers over video and is an adults-only platform.",
       },
       {
         q: "Can I choose who I talk to?",

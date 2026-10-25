@@ -19,7 +19,7 @@ export const es = {
     eyebrow: "Intercambio de idiomas, en vivo",
     headline: "Habla con un nativo ahora mismo.",
     headlineMuted: "No en tres semanas.",
-    lede: "Parlo te empareja al azar con alguien del otro lado del mundo que habla lo que tú estudias y estudia lo que tú hablas. Dos minutos para empezar, y seguís si los dos queréis.",
+    lede: "Lingora te empareja al azar con alguien del otro lado del mundo que habla lo que tú estudias y estudia lo que tú hablas. Dos minutos para empezar, y seguís si los dos queréis.",
     cta: "Empezar a hablar",
     ctaNote: "Requiere verificación de edad · Gratis",
     steps: [
@@ -42,13 +42,13 @@ export const es = {
     faqTitle: "Preguntas frecuentes",
     faq: [
       {
-        q: "¿Qué es Parlo?",
+        q: "¿Qué es Lingora?",
         a: "Un videochat de intercambio de idiomas. Te empareja al azar con un hablante nativo del idioma que estudias, que a su vez está aprendiendo el tuyo. Las conversaciones empiezan con dos minutos y se alargan solo si los dos queréis.",
       },
       { q: "¿Es gratis?", a: "Sí. El emparejamiento y las conversaciones son gratuitas." },
       {
         q: "¿Hace falta registrarse?",
-        a: "No necesitas crear una cuenta. Sí tienes que confirmar que eres mayor de 18 años: Parlo empareja desconocidos por vídeo y es una plataforma exclusivamente para adultos.",
+        a: "No necesitas crear una cuenta. Sí tienes que confirmar que eres mayor de 18 años: Lingora empareja desconocidos por vídeo y es una plataforma exclusivamente para adultos.",
       },
       {
         q: "¿Se graban las conversaciones?",
@@ -60,12 +60,12 @@ export const es = {
       },
     ],
     footer:
-      "Parlo es una plataforma para mayores de 18 años. Moderamos activamente, no grabamos las conversaciones y reportamos material de abuso infantil a las autoridades competentes.",
+      "Lingora es una plataforma para mayores de 18 años. Moderamos activamente, no grabamos las conversaciones y reportamos material de abuso infantil a las autoridades competentes.",
   },
 
   gate: {
     title: "Verificación de edad",
-    body: "Parlo es exclusivamente para mayores de 18 años. Emparejamos personas desconocidas por vídeo, así que esta verificación no es un trámite.",
+    body: "Lingora es exclusivamente para mayores de 18 años. Emparejamos personas desconocidas por vídeo, así que esta verificación no es un trámite.",
     pendingLabel: "Pendiente de integración:",
     pending:
       "en producción este paso debe llamar a un proveedor de verificación de edad. La casilla de abajo es solo el marcador de posición para desarrollo.",
@@ -172,12 +172,12 @@ export const es = {
 
   banned: {
     title: "Cuenta suspendida",
-    appeal: "Si crees que es un error, puedes apelar escribiendo a soporte@parlo.example.",
+    appeal: "Si crees que es un error, puedes apelar escribiendo a soporte@lingora.app.",
   },
 
   errors: {
     camera:
-      "Parlo necesita cámara y micrófono. Revisa los permisos del navegador y vuelve a intentarlo.",
+      "Lingora necesita cámara y micrófono. Revisa los permisos del navegador y vuelve a intentarlo.",
     misconfigured:
       "Configuración incompleta: NEXT_PUBLIC_SIGNAL_URL apunta a ws:// desde una página https. El servidor de señalización necesita wss://.",
     closed: "Conexión cerrada.",
@@ -191,7 +191,7 @@ export const es = {
     descriptionTemplate:
       "Habla {lang} con hablantes nativos que están aprendiendo español. Emparejamiento aleatorio, gratis, sin agendar. Solo mayores de 18 años.",
     intro:
-      "Parlo te empareja al azar con hablantes nativos que están aprendiendo tu idioma. Ellos practican contigo, tú practicas con ellos, y la conversación dura lo que los dos queráis.",
+      "Lingora te empareja al azar con hablantes nativos que están aprendiendo tu idioma. Ellos practican contigo, tú practicas con ellos, y la conversación dura lo que los dos queráis.",
     ctaTemplate: "Empezar a hablar {lang}",
     howTitle: "Cómo funciona",
     howSteps: [
@@ -203,7 +203,7 @@ export const es = {
     faq: [
       {
         q: "¿Es gratis?",
-        a: "Sí. El emparejamiento y las conversaciones son gratuitas. Parlo funciona por reciprocidad: tú ofreces tu idioma a quien lo estudia y esa persona te ofrece el suyo.",
+        a: "Sí. El emparejamiento y las conversaciones son gratuitas. Lingora funciona por reciprocidad: tú ofreces tu idioma a quien lo estudia y esa persona te ofrece el suyo.",
       },
       {
         q: "¿Necesito un nivel mínimo?",
@@ -211,7 +211,7 @@ export const es = {
       },
       {
         q: "¿Hay que registrarse?",
-        a: "No hace falta crear una cuenta para empezar. Sí hay que confirmar que eres mayor de 18 años: Parlo empareja desconocidos por vídeo y es una plataforma exclusivamente para adultos.",
+        a: "No hace falta crear una cuenta para empezar. Sí hay que confirmar que eres mayor de 18 años: Lingora empareja desconocidos por vídeo y es una plataforma exclusivamente para adultos.",
       },
       {
         q: "¿Puedo elegir con quién hablo?",
