@@ -31,7 +31,9 @@ cd "$ROOT"
 say() { printf '\n\033[1m%s\033[0m\n' "$*"; }
 
 say "1/4  Comprobando que el dominio es tuyo en Vercel"
-if ! npx --yes vercel domains ls 2>/dev/null | grep -q "$DOMAIN"; then
+# The Vercel CLI writes its table to stderr, so discarding stderr here
+# makes every domain look missing. Learnt the hard way.
+if ! npx --yes vercel domains ls 2>&1 | grep -q "$DOMAIN"; then
   echo "  '$DOMAIN' no aparece entre tus dominios."
   echo "  Cómpralo primero:  npx vercel domains buy $DOMAIN"
   exit 1
