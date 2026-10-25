@@ -39,10 +39,12 @@ services:
       - key: DEVICE_TOKEN_SECRET
         generateValue: true
 
-      # Durable moderation state. Without it the server runs the
-      # in-memory fallback and says so at boot — fine for a demo, not
-      # for anything with real users. Apply
-      # db/migrations/001_moderation.sql before setting this.
+      # Durable moderation state. Set this from the Render dashboard
+      # (Environment -> Add from database) so the connection string is
+      # never copied by hand. The server applies
+      # db/migrations/001_moderation.sql itself on first boot, under a
+      # Postgres advisory lock, so no manual migration step is needed.
+      # Without it the server runs the in-memory fallback and says so.
       - key: DATABASE_URL
         sync: false
 

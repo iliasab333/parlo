@@ -1,5 +1,43 @@
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 import pg from "pg";
 import { config } from "./config.js";
+
+/**
+ * Arbitrary but fixed: every instance must pick the same number for the
+ * lock to mean anything.
+ */
+const MIGRATION_LOCK_ID = 4_815_162_342;
+
+const MIGRATION_FILE = "db/migrations/001_moderation.sql";
+
+/**
+ * The .sql file is the single source of truth — it is what a human runs
+ * by hand against a database the server cannot reach, so inlining a
+ * second copy here would be a drift waiting to happen. Resolve from the
+ * working directory first (how Render starts us, from the repo root),
+ * then relative to this module for anything launched from elsewhere.
+ */
+async function loadMigration(): Promise<string> {
+  const here = path.dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    path.resolve(process.cwd(), MIGRATION_FILE),
+    path.resolve(here, "../../..", MIGRATION_FILE),
+    path.resolve(here, "../../../..", MIGRATION_FILE),
+  ];
+  for (const file of candidates) {
+    try {
+      return await readFile(file, "utf8");
+    } catch {
+      /* try the next one */
+    }
+  }
+  throw new Error(
+    `cannot find ${MIGRATION_FILE} (looked in: ${candidates.join(", ")}). ` +
+      "Apply it by hand, or start the server from the repository root.",
+  );
+}
 
 /* ------------------------------------------------------------------ *
  * Durable moderation storage.
@@ -133,22 +171,43 @@ class PostgresStore implements Store {
     this.pool.on("error", (err) => console.error("[db] idle client error:", err.message));
   }
 
-  async init() {
-    // Fail fast and loudly: a moderation store that silently isn't
-    // there is worse than a server that refuses to boot.
-    const { rows } = await this.pool.query("select 1 as ok");
-    if (rows[0]?.ok !== 1) throw new Error("database health check failed");
-
-    const { rows: tables } = await this.pool.query(
+  private async tablesPresent(client: pg.PoolClient): Promise<boolean> {
+    const { rows } = await client.query(
       `select table_name from information_schema.tables
        where table_schema = $1 and table_name in ('bans','reports')`,
       [config.dbSchema],
     );
-    if (tables.length < 2) {
-      throw new Error(
-        `moderation tables missing in schema "${config.dbSchema}" — ` +
-          "apply db/migrations/001_moderation.sql first",
-      );
+    return rows.length >= 2;
+  }
+
+  async init() {
+    const client = await this.pool.connect();
+    try {
+      // Fail fast and loudly: a moderation store that silently isn't
+      // there is worse than a server that refuses to boot.
+      const { rows } = await client.query("select 1 as ok");
+      if (rows[0]?.ok !== 1) throw new Error("database health check failed");
+
+      // An advisory lock serialises concurrent boots. The migration is
+      // idempotent, but two instances issuing the same CREATE at once
+      // still deadlock on the catalog — cheap insurance, and it makes
+      // scaling past one instance safe rather than lucky.
+      await client.query("select pg_advisory_lock($1)", [MIGRATION_LOCK_ID]);
+      try {
+        if (!(await this.tablesPresent(client))) {
+          console.log(`[db] moderation tables absent in "${config.dbSchema}" — applying migration`);
+          await client.query(await loadMigration());
+        }
+        if (!(await this.tablesPresent(client))) {
+          throw new Error(
+            `migration ran but tables are still missing in schema "${config.dbSchema}"`,
+          );
+        }
+      } finally {
+        await client.query("select pg_advisory_unlock($1)", [MIGRATION_LOCK_ID]);
+      }
+    } finally {
+      client.release();
     }
   }
 
