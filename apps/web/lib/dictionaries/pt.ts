@@ -224,17 +224,24 @@ export const pt: Dictionary = {
   },
 
   country: {
-    titleTemplate: "Praticar {lang} com {people}",
+    titleTemplate: "Praticar {lang} com nativos {place}",
     descriptionTemplate:
-      "Fala {lang} com {people} que estão a aprender a tua língua. Emparelhamento aleatório e gratuito, sem marcar nada. Apenas maiores de 18 anos.",
+      "Fala {lang} com nativos {place} que estão a aprender a tua língua. Emparelhamento aleatório e gratuito, sem marcar nada. Apenas maiores de 18 anos.",
     accentTitle: "Como soa",
     scheduleTitle: "Quando coincidem",
-    ctaTemplate: "Falar com {people}",
+    ctaTemplate: "Falar com nativos {place}",
     otherVariants: "Outras variantes",
     allSpeakersTemplate: "Todos os falantes de {lang}",
   },
 
   purpose: {
+    labels: {
+      "conversacion": { name: "ganhar fluência", title: "Praticar conversação para ganhar fluência" },
+      "entrevista-de-trabajo": { name: "uma entrevista de emprego", title: "Praticar um idioma para uma entrevista de emprego" },
+      "viajes": { name: "uma viagem", title: "Praticar um idioma antes de viajar" },
+      "examen-oral": { name: "um exame oral", title: "Preparar a prova oral de um exame de idiomas" },
+      "pronunciacion": { name: "melhorar a pronúncia", title: "Praticar pronúncia e sotaque com nativos" },
+    },
     hubTitle: "Para que queres praticar?",
     hubLede: "O objetivo muda a forma como deves usar cada sessão.",
     problemTitle: "O problema real",

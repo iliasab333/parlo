@@ -185,8 +185,8 @@ export const fr: Dictionary = {
 
   practise: {
     breadcrumbHome: "Accueil",
-    titleTemplate: "Pratiquer {lang} avec des natifs en vidéo",
-    h1Template: "Pratiquer {lang} en parlant avec des natifs",
+    titleTemplate: "Pratiquer {langA} avec des natifs en vidéo",
+    h1Template: "Pratiquer {langA} en parlant avec des natifs",
     descriptionTemplate:
       "Parlez {lang} avec des locuteurs natifs qui apprennent votre langue. Appariement aléatoire, gratuit, rien à planifier. Réservé aux plus de 18 ans.",
     intro:
@@ -224,17 +224,24 @@ export const fr: Dictionary = {
   },
 
   country: {
-    titleTemplate: "Pratiquer {lang} avec des {people}",
+    titleTemplate: "Pratiquer {langA} avec des natifs {place}",
     descriptionTemplate:
-      "Parlez {lang} avec des {people} qui apprennent votre langue. Appariement aléatoire, gratuit, rien à planifier. Réservé aux plus de 18 ans.",
+      "Parlez {lang} avec des locuteurs natifs {place} qui apprennent votre langue. Appariement aléatoire, gratuit, rien à planifier. Réservé aux plus de 18 ans.",
     accentTitle: "Comment ça sonne",
     scheduleTitle: "Quand vos horaires se croisent",
-    ctaTemplate: "Parler avec des {people}",
+    ctaTemplate: "Parler avec quelqu’un {place}",
     otherVariants: "Autres variantes",
     allSpeakersTemplate: "Tous les locuteurs de {lang}",
   },
 
   purpose: {
+    labels: {
+      "conversacion": { name: "gagner en aisance", title: "Pratiquer la conversation pour gagner en aisance" },
+      "entrevista-de-trabajo": { name: "un entretien d\u2019embauche", title: "Pratiquer une langue pour un entretien d\u2019embauche" },
+      "viajes": { name: "un voyage", title: "Pratiquer une langue avant de partir en voyage" },
+      "examen-oral": { name: "un oral d\u2019examen", title: "Préparer l\u2019oral d\u2019un examen de langue" },
+      "pronunciacion": { name: "améliorer la prononciation", title: "Travailler la prononciation et l\u2019accent avec des natifs" },
+    },
     hubTitle: "Pour quoi voulez-vous pratiquer ?",
     hubLede: "L'objectif change la façon dont vous devriez utiliser chaque session.",
     problemTitle: "Le vrai problème",

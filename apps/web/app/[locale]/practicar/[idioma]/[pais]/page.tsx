@@ -5,6 +5,8 @@ import { COUNTRY_VARIANTS, findVariant, variantsFor } from "@/lib/countries";
 import { fill, getDictionary } from "@/lib/dictionaries";
 import { LOCALES, isLocale } from "@/lib/i18n";
 import { LANGUAGE_PAGES, pageBySlug } from "@/lib/languages";
+import { countryName, languageName, languageWithArticle } from "@/lib/names";
+import { placeFrom } from "@/lib/places";
 import { absolute, site } from "@/lib/site";
 import { localeAlternates } from "../../../layout";
 
@@ -39,7 +41,11 @@ export async function generateMetadata({
   const { locale, page, variant } = resolved;
 
   const t = getDictionary(locale);
-  const values = { lang: page.nombre, people: variant.gentilicio };
+  const values = {
+    lang: languageName(locale, page.code),
+    langA: languageWithArticle(locale, page.code),
+    place: placeFrom(locale, variant.region, countryName(locale, variant.region)),
+  };
   const title = fill(t.country.titleTemplate, values);
   const description = fill(t.country.descriptionTemplate, values);
 
@@ -65,7 +71,11 @@ export default async function CountryPage({
   const { locale, page, variant } = resolved;
 
   const t = getDictionary(locale);
-  const values = { lang: page.nombre, people: variant.gentilicio };
+  const values = {
+    lang: languageName(locale, page.code),
+    langA: languageWithArticle(locale, page.code),
+    place: placeFrom(locale, variant.region, countryName(locale, variant.region)),
+  };
   const title = fill(t.country.titleTemplate, values);
   const siblings = variantsFor(page.code).filter((v) => v.slug !== variant.slug);
 
@@ -77,13 +87,13 @@ export default async function CountryPage({
       {
         "@type": "ListItem",
         position: 2,
-        name: fill(t.practise.h1Template, { lang: page.nombre }),
+        name: fill(t.practise.h1Template, { lang: languageName(locale, page.code), langA: languageWithArticle(locale, page.code) }),
         item: absolute(`/${locale}/practicar/${page.slug}`),
       },
       {
         "@type": "ListItem",
         position: 3,
-        name: variant.pais,
+        name: countryName(locale, variant.region),
         item: absolute(`/${locale}/practicar/${page.slug}/${variant.slug}`),
       },
     ],
@@ -97,10 +107,10 @@ export default async function CountryPage({
         <Link href={`/${locale}`} className="hover:text-ink-300">{site.name}</Link>
         <span>/</span>
         <Link href={`/${locale}/practicar/${page.slug}`} className="hover:text-ink-300">
-          {page.nombre}
+          {languageName(locale, page.code)}
         </Link>
         <span>/</span>
-        <span className="text-ink-300">{variant.pais}</span>
+        <span className="text-ink-300">{countryName(locale, variant.region)}</span>
       </nav>
 
       <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
@@ -150,14 +160,14 @@ export default async function CountryPage({
                 href={`/${locale}/practicar/${page.slug}/${v.slug}`}
                 className="rounded-lg border border-ink-700 px-3 py-1.5 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
               >
-                {v.pais}
+                {countryName(locale, v.region)}
               </Link>
             ))}
             <Link
               href={`/${locale}/practicar/${page.slug}`}
               className="rounded-lg border border-ink-700 px-3 py-1.5 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
             >
-              {fill(t.country.allSpeakersTemplate, { lang: page.nombre })}
+              {fill(t.country.allSpeakersTemplate, { lang: languageName(locale, page.code), langA: languageWithArticle(locale, page.code) })}
             </Link>
           </div>
         </section>

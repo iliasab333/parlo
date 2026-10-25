@@ -224,17 +224,24 @@ export const en: Dictionary = {
   },
 
   country: {
-    titleTemplate: "Practice {lang} with {people}",
+    titleTemplate: "Practice {lang} with native speakers {place}",
     descriptionTemplate:
-      "Speak {lang} with {people} who are learning your language. Random matching, free, nothing to schedule. Strictly 18+.",
+      "Speak {lang} with native speakers {place} who are learning your language. Random matching, free, nothing to schedule. Strictly 18+.",
     accentTitle: "How it sounds",
     scheduleTitle: "When your hours overlap",
-    ctaTemplate: "Talk to {people}",
+    ctaTemplate: "Talk to someone {place}",
     otherVariants: "Other variants",
     allSpeakersTemplate: "All {lang} speakers",
   },
 
   purpose: {
+    labels: {
+      "conversacion": { name: "getting fluent", title: "Practising conversation to get fluent" },
+      "entrevista-de-trabajo": { name: "a job interview", title: "Practising a language for a job interview" },
+      "viajes": { name: "a trip", title: "Practising a language before you travel" },
+      "examen-oral": { name: "a speaking exam", title: "Preparing for the speaking part of a language exam" },
+      "pronunciacion": { name: "better pronunciation", title: "Practising pronunciation and accent with natives" },
+    },
     hubTitle: "What are you practicing for?",
     hubLede: "The goal changes how you should spend each session.",
     problemTitle: "The real problem",

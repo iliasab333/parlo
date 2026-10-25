@@ -4,6 +4,7 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { getDictionary } from "@/lib/dictionaries";
 import { isLocale } from "@/lib/i18n";
 import { LANGUAGE_PAGES } from "@/lib/languages";
+import { languageName } from "@/lib/names";
 import { PURPOSES } from "@/lib/purposes";
 import { absolute, site } from "@/lib/site";
 
@@ -104,7 +105,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               href={`/${locale}/practicar/${p.slug}`}
               className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
             >
-              {t.home.practiceVerb} {p.nombre}
+              {t.home.practiceVerb} {languageName(locale, p.code)}
             </Link>
           ))}
         </div>
@@ -120,7 +121,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               href={`/${locale}/para/${p.slug}`}
               className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
             >
-              {p.nombre}
+              {t.purpose.labels[p.slug].name}
             </Link>
           ))}
         </div>

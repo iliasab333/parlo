@@ -5,6 +5,7 @@ import { fill, getDictionary } from "@/lib/dictionaries";
 import { LOCALES, isLocale, type Locale } from "@/lib/i18n";
 import { variantsFor } from "@/lib/countries";
 import { LANGUAGE_PAGES, pageBySlug } from "@/lib/languages";
+import { countryName, languageName, languageWithArticle } from "@/lib/names";
 import { absolute, site } from "@/lib/site";
 import { localeAlternates } from "../../layout";
 
@@ -25,9 +26,10 @@ export async function generateMetadata({
   if (!page) return {};
 
   const t = getDictionary(locale);
-  const lang = page.nombre;
-  const title = fill(t.practise.titleTemplate, { lang });
-  const description = fill(t.practise.descriptionTemplate, { lang });
+  const lang = languageName(locale, page.code);
+  const langA = languageWithArticle(locale, page.code);
+  const title = fill(t.practise.titleTemplate, { lang, langA });
+  const description = fill(t.practise.descriptionTemplate, { lang, langA });
 
   return {
     title,
@@ -52,7 +54,8 @@ export default async function LanguagePage({
   if (!page) notFound();
 
   const t = getDictionary(locale);
-  const lang = page.nombre;
+  const lang = languageName(locale, page.code);
+  const langA = languageWithArticle(locale, page.code);
   const otras = LANGUAGE_PAGES.filter((p) => p.slug !== page.slug).slice(0, 9);
   const variants = variantsFor(page.code);
 
@@ -79,7 +82,7 @@ export default async function LanguagePage({
           {
             "@type": "ListItem",
             position: 2,
-            name: fill(t.practise.h1Template, { lang }),
+            name: fill(t.practise.h1Template, { lang, langA }),
             item: absolute(`/${locale}/practicar/${page.slug}`),
           },
         ],
@@ -99,11 +102,11 @@ export default async function LanguagePage({
           {site.name}
         </Link>
         <span className="mx-2">/</span>
-        <span className="text-ink-300">{fill(t.home.practiceVerb + " {lang}", { lang })}</span>
+        <span className="text-ink-300">{fill(t.home.practiceVerb + " {lang}", { lang, langA })}</span>
       </nav>
 
       <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-        {fill(t.practise.h1Template, { lang })}
+        {fill(t.practise.h1Template, { lang, langA })}
       </h1>
 
       {/* The bespoke hook is written in Spanish for a Spanish-speaking
@@ -120,7 +123,7 @@ export default async function LanguagePage({
           href={`/${locale}/chat`}
           className="rounded-xl bg-accent px-6 py-3.5 font-semibold text-ink-950 transition hover:brightness-110"
         >
-          {fill(t.practise.ctaTemplate, { lang })}
+          {fill(t.practise.ctaTemplate, { lang, langA })}
         </Link>
         <span className="text-sm text-ink-500">
           {t.common.free} · {t.common.adultsOnly}
@@ -165,7 +168,7 @@ export default async function LanguagePage({
                 href={`/${locale}/practicar/${page.slug}/${v.slug}`}
                 className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
               >
-                {v.pais}
+                {countryName(locale, v.region)}
               </Link>
             ))}
           </div>
@@ -181,7 +184,7 @@ export default async function LanguagePage({
               href={`/${locale}/practicar/${p.slug}`}
               className="rounded-lg border border-ink-700 px-3 py-1.5 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
             >
-              {p.nombre}
+              {languageName(locale, p.code)}
             </Link>
           ))}
         </div>

@@ -185,8 +185,8 @@ export const it: Dictionary = {
 
   practise: {
     breadcrumbHome: "Home",
-    titleTemplate: "Praticare {lang} con madrelingua in video",
-    h1Template: "Praticare {lang} parlando con madrelingua",
+    titleTemplate: "Praticare {langA} con madrelingua in video",
+    h1Template: "Praticare {langA} parlando con madrelingua",
     descriptionTemplate:
       "Parla {lang} con madrelingua che stanno imparando la tua lingua. Abbinamento casuale, gratis, niente da programmare. Solo maggiori di 18 anni.",
     intro:
@@ -224,17 +224,24 @@ export const it: Dictionary = {
   },
 
   country: {
-    titleTemplate: "Praticare {lang} con {people}",
+    titleTemplate: "Praticare {langA} con madrelingua {place}",
     descriptionTemplate:
-      "Parla {lang} con {people} che stanno imparando la tua lingua. Abbinamento casuale, gratis, niente da programmare. Solo maggiori di 18 anni.",
+      "Parla {lang} con madrelingua {place} che stanno imparando la tua lingua. Abbinamento casuale, gratis, niente da programmare. Solo maggiori di 18 anni.",
     accentTitle: "Come suona",
     scheduleTitle: "Quando vi sovrapponete",
-    ctaTemplate: "Parlare con {people}",
+    ctaTemplate: "Parlare con qualcuno {place}",
     otherVariants: "Altre varianti",
     allSpeakersTemplate: "Tutti i parlanti di {lang}",
   },
 
   purpose: {
+    labels: {
+      "conversacion": { name: "sciogliersi a parlare", title: "Praticare conversazione per sciogliersi a parlare" },
+      "entrevista-de-trabajo": { name: "un colloquio di lavoro", title: "Praticare una lingua per un colloquio di lavoro" },
+      "viajes": { name: "un viaggio", title: "Praticare una lingua prima di viaggiare" },
+      "examen-oral": { name: "un esame orale", title: "Preparare la prova orale di un esame di lingua" },
+      "pronunciacion": { name: "migliorare la pronuncia", title: "Praticare pronuncia e accento con madrelingua" },
+    },
     hubTitle: "Per cosa vuoi praticare?",
     hubLede: "L'obiettivo cambia come dovresti usare ogni sessione.",
     problemTitle: "Il problema vero",

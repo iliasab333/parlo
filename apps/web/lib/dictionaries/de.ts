@@ -224,17 +224,24 @@ export const de: Dictionary = {
   },
 
   country: {
-    titleTemplate: "{lang} mit {people} üben",
+    titleTemplate: "{lang} mit Muttersprachlern {place} üben",
     descriptionTemplate:
-      "Sprich {lang} mit {people}, die deine Sprache lernen. Zufälliges Matching, kostenlos, nichts zu planen. Erst ab 18.",
+      "Sprich {lang} mit Muttersprachlern {place}, die deine Sprache lernen. Zufälliges Matching, kostenlos, nichts zu planen. Erst ab 18.",
     accentTitle: "Wie es klingt",
     scheduleTitle: "Wann ihr euch überschneidet",
-    ctaTemplate: "Mit {people} sprechen",
+    ctaTemplate: "Mit jemandem {place} sprechen",
     otherVariants: "Andere Varianten",
     allSpeakersTemplate: "Alle {lang}-Sprecher",
   },
 
   purpose: {
+    labels: {
+      "conversacion": { name: "flüssiger werden", title: "Gespräche üben, um flüssiger zu werden" },
+      "entrevista-de-trabajo": { name: "ein Vorstellungsgespräch", title: "Eine Sprache für ein Vorstellungsgespräch üben" },
+      "viajes": { name: "eine Reise", title: "Eine Sprache vor der Reise üben" },
+      "examen-oral": { name: "eine mündliche Prüfung", title: "Den mündlichen Teil einer Sprachprüfung vorbereiten" },
+      "pronunciacion": { name: "bessere Aussprache", title: "Aussprache und Akzent mit Muttersprachlern üben" },
+    },
     hubTitle: "Wofür willst du üben?",
     hubLede: "Das Ziel ändert, wie du jede Sitzung nutzen solltest.",
     problemTitle: "Das eigentliche Problem",

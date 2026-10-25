@@ -227,17 +227,24 @@ export const es = {
   },
 
   country: {
-    titleTemplate: "Practicar {lang} con {people}",
+    titleTemplate: "Practicar {lang} con nativos {place}",
     descriptionTemplate:
-      "Habla {lang} con {people} que están aprendiendo tu idioma. Emparejamiento aleatorio y gratuito, sin agendar. Solo mayores de 18 años.",
+      "Habla {lang} con nativos {place} que están aprendiendo tu idioma. Emparejamiento aleatorio y gratuito, sin agendar. Solo mayores de 18 años.",
     accentTitle: "Cómo suena",
     scheduleTitle: "Cuándo coincidís",
-    ctaTemplate: "Hablar con {people}",
+    ctaTemplate: "Hablar con nativos {place}",
     otherVariants: "Otras variantes",
     allSpeakersTemplate: "Todos los hablantes de {lang}",
   },
 
   purpose: {
+    labels: {
+      "conversacion": { name: "ganar soltura", title: "Practicar conversación para ganar soltura" },
+      "entrevista-de-trabajo": { name: "una entrevista de trabajo", title: "Practicar un idioma para una entrevista de trabajo" },
+      "viajes": { name: "un viaje", title: "Practicar un idioma antes de viajar" },
+      "examen-oral": { name: "un examen oral", title: "Preparar la prueba oral de un examen de idiomas" },
+      "pronunciacion": { name: "mejorar la pronunciación", title: "Practicar pronunciación y acento con nativos" },
+    },
     hubTitle: "¿Para qué quieres practicar?",
     hubLede: "El objetivo cambia cómo deberías usar cada sesión.",
     problemTitle: "El problema real",

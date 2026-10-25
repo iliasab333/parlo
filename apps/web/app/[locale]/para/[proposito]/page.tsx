@@ -5,6 +5,7 @@ import { fill, getDictionary } from "@/lib/dictionaries";
 import { LOCALES, isLocale } from "@/lib/i18n";
 import { LANGUAGE_PAGES } from "@/lib/languages";
 import { PURPOSES, findPurpose } from "@/lib/purposes";
+import { languageName } from "@/lib/names";
 import { absolute, site } from "@/lib/site";
 import { localeAlternates } from "../../layout";
 
@@ -28,7 +29,8 @@ export async function generateMetadata({
   if (!purpose) return {};
 
   const t = getDictionary(locale);
-  const title = locale === "es" ? purpose.titulo : `${t.purpose.hubTitle} — ${purpose.nombre}`;
+  const label = t.purpose.labels[purpose.slug];
+  const title = label.title;
   const description = locale === "es" ? purpose.problema.slice(0, 155) : t.common.description;
 
   return {
@@ -66,7 +68,7 @@ export default async function PurposePage({
           {
             "@type": "ListItem",
             position: 2,
-            name: purpose.titulo,
+            name: t.purpose.labels[purpose.slug].title,
             item: absolute(`/${locale}/para/${purpose.slug}`),
           },
         ],
@@ -75,7 +77,7 @@ export default async function PurposePage({
       // as such rather than left as an anonymous list.
       {
         "@type": "HowTo",
-        name: purpose.titulo,
+        name: t.purpose.labels[purpose.slug].title,
         step: purpose.consejos.map((c, i) => ({
           "@type": "HowToStep",
           position: i + 1,
@@ -92,11 +94,11 @@ export default async function PurposePage({
       <nav className="mb-10 text-sm text-ink-500">
         <Link href={`/${locale}`} className="hover:text-ink-300">{site.name}</Link>
         <span className="mx-2">/</span>
-        <span className="text-ink-300">{purpose.nombre}</span>
+        <span className="text-ink-300">{t.purpose.labels[purpose.slug].name}</span>
       </nav>
 
       <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-        {purpose.titulo}
+        {t.purpose.labels[purpose.slug].title}
       </h1>
 
       {/* The problem statement and the tips are bespoke Spanish copy.
@@ -137,7 +139,7 @@ export default async function PurposePage({
               href={`/${locale}/practicar/${p.slug}`}
               className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
             >
-              {p.nombre}
+              {languageName(locale, p.code)}
             </Link>
           ))}
         </div>
@@ -164,7 +166,7 @@ export default async function PurposePage({
               href={`/${locale}/para/${p.slug}`}
               className="rounded-lg border border-ink-700 px-3 py-1.5 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
             >
-              {p.nombre}
+              {t.purpose.labels[p.slug].name}
             </Link>
           ))}
         </div>

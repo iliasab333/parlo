@@ -8,8 +8,16 @@
  * The tips are the reason the page exists. A purpose page that only
  * repeats the home page in different words should be deleted.
  */
+/** The dictionaries key their labels by these, so it has to be a union. */
+export type PurposeSlug =
+  | "conversacion"
+  | "entrevista-de-trabajo"
+  | "viajes"
+  | "examen-oral"
+  | "pronunciacion";
+
 export interface Purpose {
-  slug: string;
+  slug: PurposeSlug;
   /** Spanish; other locales fall back to the generic framing. */
   nombre: string;
   titulo: string;
