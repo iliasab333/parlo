@@ -63,8 +63,11 @@ necesita un proceso de larga duración — Fly.io, Railway o Render.
 |---|---|---|
 | `apps/web` | Vercel — <https://parlo-seven.vercel.app> | **en producción** |
 | `apps/signal` | Render — <https://parlo-signal.onrender.com> | **en producción** |
-| Postgres | pendiente de aprovisionar | **no existe** |
+| Postgres | Render — `parlo-db`, Frankfurt | **en producción, caduca el 24-11-2026** |
 | TURN | no contratado | **no existe** |
+
+> La base de datos del plan gratuito de Render **se borra a los 30 días**.
+> Para que siga viva hay que pasarla a un plan de pago (desde 6 $/mes).
 
 Verificado de punta a punta en producción: emparejamiento por
 complementariedad, rol *polite* repartido, chat relevado, y el allowlist
@@ -73,9 +76,9 @@ de orígenes devolviendo 403 a cualquier origen que no sea el de Vercel.
 **Dos limitaciones activas ahora mismo:**
 
 1. **El plan gratuito de Render duerme el servicio** tras ~15 min sin
-   tráfico. Al despertar tarda unos 50 s, y el reinicio **borra el store
-   de moderación en memoria**: sin `DATABASE_URL`, los baneos no
-   sobreviven a una siesta.
+   tráfico, y al despertar tarda unos 50 s. Los baneos ya no se pierden
+   —viven en Postgres, verificado reiniciando el servicio— pero la cola
+   de emparejamiento sí, porque vive en el proceso.
 2. **Solo hay STUN, no TURN.** El 10-20% de usuarios tras NAT simétrico
    verá pantalla negra. Ver «TURN no es opcional» más abajo.
 
@@ -171,6 +174,20 @@ datos se comparten, y `reports` es un nombre que ya usa medio mundo.
 deja entrar a todos los baneados es el peor de los dos modos de fallo.
 `BAN_CHECK_FAIL_OPEN=true` lo invierte, como decisión deliberada.
 
+**La conversación se acaba sola salvo que los dos quieran seguir.**
+Arranca con dos minutos; cada prórroga acordada dura más que la
+anterior y a la tercera el reloj se apaga. Pedir seguir por tu cuenta
+no alarga nada: el otro ve que lo has pedido, y hasta que no acepta no
+pasa nada. El cronómetro no está para meter prisa, está para que
+marcharse sea lo que pasa por defecto — así nadie tiene que ser quien
+corta la conversación, que es justo lo que hace soportable empezar a
+hablar con un desconocido.
+
+**Las reacciones son un conjunto cerrado de seis.** Una reacción de
+texto libre es otro canal de chat que moderar, y un selector de emojis
+invita precisamente a los que no quieres en la pantalla de un
+desconocido.
+
 **El emparejamiento es voraz, no óptimo.** Un emparejamiento de peso máximo
 daría mejores parejas, pero la cola rota demasiado rápido para que compense
 la latencia. `O(n²)` por tick con constantes mínimas.
@@ -208,6 +225,21 @@ usuarios ve una pantalla negra y se va. Opciones: coturn autoalojado,
 Cloudflare Calls, Twilio o Metered. Presupuéstalo antes de lanzar.
 
 ---
+
+## Posicionamiento
+
+Nadie busca «videochat aleatorio»; buscan «practicar inglés con
+nativos». Por eso hay **una página prerenderizada por idioma** en
+`/practicar/<slug>`, cada una con su propio texto, sus FAQ y datos
+estructurados (`FAQPage` y `BreadcrumbList`), enlazadas desde la home.
+Son 20 páginas estáticas generadas desde `apps/web/lib/languages.ts`.
+
+También: `sitemap.xml`, `robots.txt`, URLs canónicas, `WebApplication`
+en JSON-LD, y una imagen Open Graph generada **por idioma** — un enlace
+compartido dice «Practicar japonés», no un anuncio genérico.
+
+`/chat` queda **fuera del índice**: está tras una puerta de edad y no
+tiene nada que posicionar; cada rastreo suyo sería presupuesto perdido.
 
 ## Antes de abrir al público
 
