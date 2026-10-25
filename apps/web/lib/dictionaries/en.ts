@@ -2,7 +2,7 @@ import type { Dictionary } from "./es";
 
 export const en: Dictionary = {
   common: {
-    tagline: "Practise languages with native speakers, right now",
+    tagline: "Practice with natives, right now",
     description:
       "Random video chat for language exchange. We pair you with someone who speaks what you're learning and is learning what you speak. Free, and strictly 18+.",
     adultsOnly: "18+ only",
@@ -21,7 +21,7 @@ export const en: Dictionary = {
     ctaNote: "Age verification required · Free",
     steps: [
       {
-        title: "Say what you speak and what you're practising",
+        title: "Say what you speak and what you're practicing",
         body: "Your own language and the one you want to improve. Matching looks for real reciprocity: you teach, you learn.",
       },
       {
@@ -35,7 +35,7 @@ export const en: Dictionary = {
     ],
     languagesTitle: "Pick your language",
     languagesLede: "Twenty languages, each with its own community.",
-    practiceVerb: "Practise",
+    practiceVerb: "Practice",
     faqTitle: "Frequently asked questions",
     faq: [
       {
@@ -76,7 +76,7 @@ export const en: Dictionary = {
     connecting: "Connecting to the server…",
     speak: "I speak fluently",
     speakHint: "what you offer",
-    learn: "I want to practise",
+    learn: "I want to practice",
     learnHint: "what you're after",
     addAnother: "+ add another",
     chooseLanguage: "Choose a language",
@@ -115,7 +115,7 @@ export const en: Dictionary = {
 
   session: {
     speaks: "Speaks",
-    practises: "Practising",
+    practices: "Practising",
     anonymous: "Anonymous",
     international: "International",
     you: "You",
@@ -181,18 +181,18 @@ export const en: Dictionary = {
     connect: "Couldn't reach the matchmaking server.",
   },
 
-  practise: {
+  practice: {
     breadcrumbHome: "Home",
-    titleTemplate: "Practise {lang} with native speakers over video",
-    h1Template: "Practise {lang} by talking to native speakers",
+    titleTemplate: "Practice {lang} with native speakers over video",
+    h1Template: "Practice {lang} by talking to native speakers",
     descriptionTemplate:
       "Speak {lang} with native speakers who are learning your language. Random matching, free, nothing to schedule. Strictly 18+.",
     intro:
-      "Lingora pairs you at random with native speakers who are learning your language. They practise with you, you practise with them, and the conversation lasts as long as you both want it to.",
+      "Lingora pairs you at random with native speakers who are learning your language. They practice with you, you practice with them, and the conversation lasts as long as you both want it to.",
     ctaTemplate: "Start speaking {lang}",
     howTitle: "How it works",
     howSteps: [
-      "You say which language you speak and which you're practising.",
+      "You say which language you speak and which you're practicing.",
       "We pair you with someone whose profile is yours in reverse.",
       "You talk. If it isn't flowing, you move on without explaining yourself.",
     ],
@@ -222,7 +222,7 @@ export const en: Dictionary = {
   },
 
   country: {
-    titleTemplate: "Practise {lang} with {people}",
+    titleTemplate: "Practice {lang} with {people}",
     descriptionTemplate:
       "Speak {lang} with {people} who are learning your language. Random matching, free, nothing to schedule. Strictly 18+.",
     accentTitle: "How it sounds",
@@ -233,7 +233,7 @@ export const en: Dictionary = {
   },
 
   purpose: {
-    hubTitle: "What are you practising for?",
+    hubTitle: "What are you practicing for?",
     hubLede: "The goal changes how you should spend each session.",
     problemTitle: "The real problem",
     tipsTitle: "How to make a session count",
