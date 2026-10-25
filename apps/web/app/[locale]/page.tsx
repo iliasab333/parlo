@@ -4,6 +4,7 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { getDictionary } from "@/lib/dictionaries";
 import { isLocale } from "@/lib/i18n";
 import { LANGUAGE_PAGES } from "@/lib/languages";
+import { PURPOSES } from "@/lib/purposes";
 import { absolute, site } from "@/lib/site";
 
 export default async function Home({ params }: PageProps<"/[locale]">) {
@@ -104,6 +105,22 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
             >
               {t.home.practiceVerb} {p.nombre}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-16 border-t border-ink-800 pt-12">
+        <h2 className="text-2xl font-semibold tracking-tight">{t.purpose.hubTitle}</h2>
+        <p className="mt-2 text-sm text-ink-500">{t.purpose.hubLede}</p>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {PURPOSES.map((p) => (
+            <Link
+              key={p.slug}
+              href={`/${locale}/para/${p.slug}`}
+              className="rounded-lg border border-ink-700 px-3.5 py-2 text-sm text-ink-300 transition hover:border-accent hover:text-accent"
+            >
+              {p.nombre}
             </Link>
           ))}
         </div>

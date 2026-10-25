@@ -220,4 +220,24 @@ export const de: Dictionary = {
       },
     ],
   },
+
+  country: {
+    titleTemplate: "{lang} mit {people} üben",
+    descriptionTemplate:
+      "Sprich {lang} mit {people}, die deine Sprache lernen. Zufälliges Matching, kostenlos, nichts zu planen. Erst ab 18.",
+    accentTitle: "Wie es klingt",
+    scheduleTitle: "Wann ihr euch überschneidet",
+    ctaTemplate: "Mit {people} sprechen",
+    otherVariants: "Andere Varianten",
+    allSpeakersTemplate: "Alle {lang}-Sprecher",
+  },
+
+  purpose: {
+    hubTitle: "Wofür willst du üben?",
+    hubLede: "Das Ziel ändert, wie du jede Sitzung nutzen solltest.",
+    problemTitle: "Das eigentliche Problem",
+    tipsTitle: "So holst du aus einer Sitzung etwas heraus",
+    languagesTitle: "Sprache wählen",
+    otherPurposes: "Andere Ziele",
+  },
 };

@@ -223,6 +223,26 @@ export const es = {
       },
     ],
   },
+
+  country: {
+    titleTemplate: "Practicar {lang} con {people}",
+    descriptionTemplate:
+      "Habla {lang} con {people} que están aprendiendo tu idioma. Emparejamiento aleatorio y gratuito, sin agendar. Solo mayores de 18 años.",
+    accentTitle: "Cómo suena",
+    scheduleTitle: "Cuándo coincidís",
+    ctaTemplate: "Hablar con {people}",
+    otherVariants: "Otras variantes",
+    allSpeakersTemplate: "Todos los hablantes de {lang}",
+  },
+
+  purpose: {
+    hubTitle: "¿Para qué quieres practicar?",
+    hubLede: "El objetivo cambia cómo deberías usar cada sesión.",
+    problemTitle: "El problema real",
+    tipsTitle: "Cómo aprovechar una sesión",
+    languagesTitle: "Elige el idioma",
+    otherPurposes: "Otros objetivos",
+  },
 };
 
 export type Dictionary = typeof es;

@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { LOCALES, LOCALE_HREFLANG, DEFAULT_LOCALE } from "@/lib/i18n";
+import { COUNTRY_VARIANTS } from "@/lib/countries";
 import { LANGUAGE_PAGES } from "@/lib/languages";
+import { PURPOSES } from "@/lib/purposes";
 import { absolute } from "@/lib/site";
 
 /**
@@ -22,7 +24,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   });
 
-  const paths = ["", ...LANGUAGE_PAGES.map((p) => `/practicar/${p.slug}`)];
+  const countryPaths = COUNTRY_VARIANTS.flatMap((v) => {
+    const page = LANGUAGE_PAGES.find((p) => p.code === v.language);
+    return page ? [`/practicar/${page.slug}/${v.slug}`] : [];
+  });
+
+  const paths = [
+    "",
+    ...LANGUAGE_PAGES.map((p) => `/practicar/${p.slug}`),
+    ...countryPaths,
+    ...PURPOSES.map((p) => `/para/${p.slug}`),
+  ];
 
   return LOCALES.flatMap((locale) =>
     paths.map((path) => ({

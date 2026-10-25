@@ -220,4 +220,24 @@ export const en: Dictionary = {
       },
     ],
   },
+
+  country: {
+    titleTemplate: "Practise {lang} with {people}",
+    descriptionTemplate:
+      "Speak {lang} with {people} who are learning your language. Random matching, free, nothing to schedule. Strictly 18+.",
+    accentTitle: "How it sounds",
+    scheduleTitle: "When your hours overlap",
+    ctaTemplate: "Talk to {people}",
+    otherVariants: "Other variants",
+    allSpeakersTemplate: "All {lang} speakers",
+  },
+
+  purpose: {
+    hubTitle: "What are you practising for?",
+    hubLede: "The goal changes how you should spend each session.",
+    problemTitle: "The real problem",
+    tipsTitle: "How to make a session count",
+    languagesTitle: "Pick the language",
+    otherPurposes: "Other goals",
+  },
 };

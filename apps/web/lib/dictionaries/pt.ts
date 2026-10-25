@@ -220,4 +220,24 @@ export const pt: Dictionary = {
       },
     ],
   },
+
+  country: {
+    titleTemplate: "Praticar {lang} com {people}",
+    descriptionTemplate:
+      "Fala {lang} com {people} que estão a aprender a tua língua. Emparelhamento aleatório e gratuito, sem marcar nada. Apenas maiores de 18 anos.",
+    accentTitle: "Como soa",
+    scheduleTitle: "Quando coincidem",
+    ctaTemplate: "Falar com {people}",
+    otherVariants: "Outras variantes",
+    allSpeakersTemplate: "Todos os falantes de {lang}",
+  },
+
+  purpose: {
+    hubTitle: "Para que queres praticar?",
+    hubLede: "O objetivo muda a forma como deves usar cada sessão.",
+    problemTitle: "O problema real",
+    tipsTitle: "Como aproveitar uma sessão",
+    languagesTitle: "Escolhe o idioma",
+    otherPurposes: "Outros objetivos",
+  },
 };
