@@ -115,7 +115,7 @@ export const en: Dictionary = {
 
   session: {
     speaks: "Speaks",
-    practices: "Practising",
+    practises: "Practicing",
     anonymous: "Anonymous",
     international: "International",
     you: "You",
@@ -181,7 +181,7 @@ export const en: Dictionary = {
     connect: "Couldn't reach the matchmaking server.",
   },
 
-  practice: {
+  practise: {
     breadcrumbHome: "Home",
     titleTemplate: "Practice {lang} with native speakers over video",
     h1Template: "Practice {lang} by talking to native speakers",
